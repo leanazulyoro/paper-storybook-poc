@@ -30,13 +30,13 @@ and report it: that's a code change for a human-reviewed commit, not a sync.
 Paper has no change feed and its export has no layer names, so changes are found by diffing.
 Source boards and their snapshot files:
 
-| Page › board                                        | Snapshot                                   |
-| --------------------------------------------------- | ------------------------------------------ |
-| Tokens › Colors & Type                              | `paper-snapshots/Tokens/ColorsAndType.txt` |
-| Tokens › Typography                                 | `paper-snapshots/Tokens/Typography.txt`    |
+| Page › board                                                      | Snapshot                                   |
+| ----------------------------------------------------------------- | ------------------------------------------ |
+| Tokens › Colors & Type                                            | `paper-snapshots/Tokens/ColorsAndType.txt` |
+| Tokens › Typography                                               | `paper-snapshots/Tokens/Typography.txt`    |
 | Components › Button, Input, Badge, Card, CopyButton, DropdownMenu | `paper-snapshots/Components/<Board>.txt`   |
-| Blocks › DepositForm, VaultSummary, PageHeader      | `paper-snapshots/Blocks/<Board>.txt`       |
-| Icons › Mono, Color                                 | `paper-snapshots/Icons/<Board>.txt`        |
+| Blocks › DepositForm, VaultSummary, PageHeader                    | `paper-snapshots/Blocks/<Board>.txt`       |
+| Icons › Mono, Color                                               | `paper-snapshots/Icons/<Board>.txt`        |
 
 1. `get_basic_info` per page for board ids (pages can gain boards: add them to the table).
 2. `get_jsx` every source board and overwrite its snapshot with the output **verbatim** (the JSX
@@ -168,3 +168,9 @@ with the Paper boards (screenshots) for a visual check.
 `node scripts/check-sync-commits.mjs HEAD~1 HEAD`. Docs/findings go in a separate commit.
 Report anything you skipped (hardcoded values from step 0b first, structural changes, drift, out-of-date copies)
 to the user.
+
+**Commit order when code depends on what the sync removes or renames.** A sync can't touch `.tsx`,
+so if it removes or renames something code still uses (an icon key, a style key), the sync commit
+alone won't build. Do the code commit first (switch the usage, e.g. `network-check` → `check`,
+`inForm` → `end`), then the sync that removes the old one. Every commit then builds on its own,
+and the sync/code split stays readable in history.

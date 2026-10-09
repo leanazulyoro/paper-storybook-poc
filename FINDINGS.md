@@ -98,7 +98,6 @@
 - 👍 Caught a silent bug: tailwind-merge treats unknown `text-small` as a colour and dropped it when merged with `text-muted-foreground` (Input hint went 12→16px). Fix: `cn()` extends tailwind-merge's font-size group from a generated `typography.ts` list, so a new Paper style can't reintroduce it. Any custom Tailwind namespace needs the same.
 - Paper still has no text-style binding: block layers are copies with raw values, so a Typography board change reaches code everywhere (blocks use `text-h1`) but not Paper's copies (`code-to-paper` per copy). Paper's `get_tokens` has no composite text tokens, so the sync reads the board, like components.
 
-
 ## Codex workflow test: network selector and visual review (2026-10-09)
 
 Tested by **Codex** against the copied Paper file `Deans Experiment`. This was one workflow test; no model comparison was run. The public result is [PR #1: Add reviewed network selector, pill badges, and design review workflow](https://github.com/leanazulyoro/paper-storybook-poc/pull/1), opened from `deanfyi:codex/paper-design-review` because this account has no push access to the upstream repository.
@@ -113,3 +112,10 @@ Tested by **Codex** against the copied Paper file `Deans Experiment`. This was o
 - **Remote CI is not a pass yet.** After the PR was opened, [the first upstream CI run](https://github.com/leanazulyoro/paper-storybook-poc/actions/runs/37963002100) ended with `action_required`, zero jobs, and GitHub's notice that the workflow is awaiting maintainer approval. Local checks are green; upstream checks cannot be claimed green until a maintainer allows the fork workflow to run. No merge or deployment was performed.
 
 Useful improvements from this test: maintain a copy/registry checklist when adding atoms, verify popup positioning in the reviewed state exports, and add a real-browser visual check for forced Storybook states alongside interaction tests. Keep the human visual checkpoint before new design implementation and retain the unchanged re-export check after sync. These observations are bounded to this test, not a claim that all designs or interactions round-trip automatically.
+
+## First external PR: design-side agent + engineering fixes (PR 1, 2026-10-09)
+
+- Dean's agent (Codex) designed a network dropdown in Paper, Dean reviewed it visually, then the agent synced and implemented it. Review found a behaviour bug (clicking outside selected the hovered option), a duplicate icon, and a consumer-named prop (`inForm`).
+- Split that worked: **whoever owns the layer fixes it.** Engineers pushed the behaviour fix (with a regression story) to the PR branch; Dean took the visual decisions (one 8px gap, reuse `check`) and the Paper-driven rename end to end (Paper variant `DropdownMenu/Content/End` → `sync(paper):` → separate `refactor(ui):` commit `inForm` → `align`). No code back-and-forth through the designer's agent; his round-trip check (re-export all boards → no code diff) confirmed Paper and code agree.
+- Gap found: the sync commit removed `network-check` while `.tsx` still used it, so that commit alone didn't build. Rule added to `paper-to-code`: when a sync removes/renames something code uses, the code commit goes first.
+- Open question for the real webapp: should the designer's agent write behaviour code (`.tsx`) at all? Here it did a decent job but shipped a behaviour bug the design side couldn't catch; engineers owning `.tsx` on design PRs is the likely balance.
