@@ -1,0 +1,137 @@
+    <div className="[font-synthesis:none] wrap-anywhere text-xs leading-4 flex overflow-clip w-[824px] h-fit flex-col font-sans p-8 gap-4 [background-color:var(--color-background)] antialiased">
+      <div className="font-sans font-medium tracking-wide uppercase text-muted-foreground text-xs/tight">
+        DropdownMenu
+      </div>
+      <div className="flex items-start w-full gap-8">
+        <div className="flex flex-col w-[232px] shrink-0 gap-6">
+          <div className="flex flex-col items-start gap-2">
+            <div className="font-sans font-medium text-muted-foreground text-xs/tight">
+              Closed
+            </div>
+            <div className="flex items-center justify-center h-[40px] w-max px-4 rounded-md gap-2 shrink-0 bg-muted border border-solid border-border">
+              <div className="font-sans font-semibold w-max text-foreground text-sm/tight">
+                Ethereum
+              </div>
+              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block' }}>
+                <path d="M4 6L8 10L12 6" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          </div>
+          <div className="flex flex-col items-start gap-2">
+            <div className="font-sans font-medium text-muted-foreground text-xs/tight">
+              Trigger · hover
+            </div>
+            <div className="flex items-center justify-center h-[40px] w-max px-4 rounded-md gap-2 shrink-0 bg-border border border-solid border-border">
+              <div className="font-sans font-semibold w-max text-foreground text-sm/tight">
+                Ethereum
+              </div>
+              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block' }}>
+                <path d="M4 6L8 10L12 6" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          </div>
+          <div className="flex flex-col items-start gap-2">
+            <div className="font-sans font-medium text-muted-foreground text-xs/tight">
+              Trigger · disabled
+            </div>
+            <div className="flex items-center justify-center h-[40px] opacity-disabled w-max px-4 rounded-md gap-2 shrink-0 bg-muted border border-solid border-border">
+              <div className="font-sans font-semibold w-max text-foreground text-sm/tight">
+                Ethereum
+              </div>
+              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block' }}>
+                <path d="M4 6L8 10L12 6" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col w-[232px] shrink-0 gap-2">
+          <div className="font-sans font-medium text-muted-foreground text-xs/tight">
+            Open · align start
+          </div>
+          <div className="flex shrink-0 w-max relative">
+            <div className="flex items-center justify-center h-[40px] w-max px-4 rounded-md gap-2 bg-muted border border-solid border-border">
+              <div className="font-sans font-semibold w-max text-foreground text-sm/tight">
+                Ethereum
+              </div>
+              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block' }}>
+                <path d="M4 10L8 6L12 10" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div className="flex flex-col w-[232px] p-1 rounded-md absolute left-[0px] top-[calc(100%+var(--spacing-2))] [background-color:var(--color-background)] border border-solid border-border">
+              <div className="flex items-center h-[40px] px-3 rounded-sm justify-between gap-3 shrink-0 bg-(--color-primary)/tint">
+                <div className="font-sans font-normal w-max text-foreground text-sm/tight">
+                  Ethereum
+                </div>
+                <svg width="24" height="24" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', height: '16px', width: '16px', flexShrink: '0' }}>
+                  <path d="M3 8.5l3 3 7-7" fill="none" stroke="var(--color-primary)" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <div className="flex items-center h-[40px] px-3 rounded-sm justify-between gap-3 shrink-0 bg-muted">
+                <div className="font-sans font-normal w-max text-foreground text-sm/tight">
+                  Arbitrum
+                </div>
+                <div className="shrink-0 size-4" />
+              </div>
+              <div className="flex items-center h-[40px] px-3 rounded-sm justify-between gap-3 shrink-0">
+                <div className="font-sans font-normal w-max text-foreground text-sm/tight">
+                  Base
+                </div>
+                <div className="shrink-0 size-4" />
+              </div>
+              <div className="flex items-center h-[40px] px-3 rounded-sm justify-between gap-3 opacity-disabled shrink-0">
+                <div className="font-sans font-normal w-max text-foreground text-sm/tight">
+                  Polygon
+                </div>
+                <div className="shrink-0 size-4" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col w-[232px] shrink-0 gap-2 items-end">
+          <div className="font-sans font-medium text-muted-foreground text-xs/tight">
+            Open · align end
+          </div>
+          <div className="flex shrink-0 w-max relative">
+            <div className="flex items-center justify-center h-[40px] w-max px-4 rounded-md gap-2 bg-muted border border-solid border-border">
+              <div className="font-sans font-semibold w-max text-foreground text-sm/tight">
+                Ethereum
+              </div>
+              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block' }}>
+                <path d="M4 10L8 6L12 10" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div className="flex flex-col w-[232px] p-1 rounded-md absolute top-[calc(100%+var(--spacing-2))] right-[0px] [background-color:var(--color-background)] border border-solid border-border">
+              <div className="flex items-center h-[40px] px-3 rounded-sm justify-between gap-3 shrink-0 bg-(--color-primary)/tint">
+                <div className="font-sans font-normal w-max text-foreground text-sm/tight">
+                  Ethereum
+                </div>
+                <svg width="24" height="24" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', height: '16px', width: '16px', flexShrink: '0' }}>
+                  <path d="M3 8.5l3 3 7-7" fill="none" stroke="var(--color-primary)" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <div className="flex items-center h-[40px] px-3 rounded-sm justify-between gap-3 shrink-0 bg-muted">
+                <div className="font-sans font-normal w-max text-foreground text-sm/tight">
+                  Arbitrum
+                </div>
+                <div className="shrink-0 size-4" />
+              </div>
+              <div className="flex items-center h-[40px] px-3 rounded-sm justify-between gap-3 shrink-0">
+                <div className="font-sans font-normal w-max text-foreground text-sm/tight">
+                  Base
+                </div>
+                <div className="shrink-0 size-4" />
+              </div>
+              <div className="flex items-center h-[40px] px-3 rounded-sm justify-between gap-3 opacity-disabled shrink-0">
+                <div className="font-sans font-normal w-max text-foreground text-sm/tight">
+                  Polygon
+                </div>
+                <div className="shrink-0 size-4" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="font-sans font-medium whitespace-pre-wrap text-muted-foreground text-xs/tight">
+        Ethereum selected · Arbitrum hover · Polygon disabled<br />Sample networks for design review
+      </div>
+    </div>

@@ -3,7 +3,7 @@
         Mono icons · follow the text colour
       </div>
       <div className="flex flex-wrap gap-3">
-        <div className="flex flex-col items-center w-[96px] shrink-0 p-3 rounded-md gap-2 border border-solid border-border">
+        <div className="flex flex-col items-center w-[128px] shrink-0 p-3 rounded-md gap-2 border border-solid border-border">
           <svg width="24" height="24" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', flexShrink: '0' }}>
             <path d="M3 8.5l3 3 7-7" fill="none" stroke="var(--color-foreground)" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -11,7 +11,7 @@
             check
           </div>
         </div>
-        <div className="flex flex-col items-center w-[96px] shrink-0 p-3 rounded-md gap-2 border border-solid border-border">
+        <div className="flex flex-col items-center w-[128px] shrink-0 p-3 rounded-md gap-2 border border-solid border-border">
           <svg width="24" height="24" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', flexShrink: '0' }}>
             <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" />
             <path d="M10.5 3.5V3A1.5 1.5 0 0 0 9 1.5H3A1.5 1.5 0 0 0 1.5 3v6A1.5 1.5 0 0 0 3 10.5h.5" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" />
@@ -20,12 +20,28 @@
             copy
           </div>
         </div>
-        <div className="flex flex-col items-center w-[96px] shrink-0 p-3 rounded-md gap-2 border border-solid border-border">
+        <div className="flex flex-col items-center w-[128px] shrink-0 p-3 rounded-md gap-2 border border-solid border-border">
           <svg width="24" height="24" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', flexShrink: '0' }}>
             <path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <div className="font-[system-ui,sans-serif] text-muted-foreground text-xs/tight">
             arrow-right
+          </div>
+        </div>
+        <div className="flex flex-col items-center w-[128px] shrink-0 p-3 rounded-md gap-2 border border-solid border-border">
+          <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block', height: '24px', width: '24px' }}>
+            <path d="M4 6L8 10L12 6" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <div className="font-[system-ui,sans-serif] text-muted-foreground text-xs/tight">
+            chevron-down
+          </div>
+        </div>
+        <div className="flex flex-col items-center w-[128px] shrink-0 p-3 rounded-md gap-2 border border-solid border-border">
+          <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block', height: '24px', width: '24px' }}>
+            <path d="M4 10L8 6L12 10" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <div className="font-[system-ui,sans-serif] text-muted-foreground text-xs/tight">
+            chevron-up
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@
             <div className="font-semibold font-[system-ui,sans-serif] text-foreground text-base/normal">
               USDC Vault
             </div>
-            <div className="flex items-center h-6 font-medium px-2 rounded-sm shrink-0 bg-success/tint">
+            <div className="flex items-center h-6 font-medium px-2 rounded-full shrink-0 bg-success/tint">
               <div className="flex font-medium w-max font-[system-ui,sans-serif] text-success text-xs/tight">
                 Active
               </div>
@@ -46,7 +46,7 @@
             <div className="font-semibold font-[system-ui,sans-serif] text-foreground text-base/normal">
               USDC Vault
             </div>
-            <div className="flex items-center h-6 font-medium px-2 rounded-sm shrink-0 bg-muted">
+            <div className="flex items-center h-6 font-medium px-2 rounded-full shrink-0 bg-muted">
               <div className="flex font-medium w-max font-[system-ui,sans-serif] text-muted-foreground text-xs/tight">
                 Paused
               </div>
@@ -84,7 +84,7 @@
             <div className="font-semibold font-[system-ui,sans-serif] text-foreground text-base/normal">
               USDC-Tresor mit variabler Rendite
             </div>
-            <div className="flex items-center h-6 font-medium px-2 rounded-sm shrink-0 bg-warning/tint">
+            <div className="flex items-center h-6 font-medium px-2 rounded-full shrink-0 bg-warning/tint">
               <div className="flex font-medium w-max font-[system-ui,sans-serif] text-warning text-xs/tight">
                 Geringe Liquidität
               </div>

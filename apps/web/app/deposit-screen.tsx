@@ -1,6 +1,6 @@
 'use client'
 
-import { Badge, DepositForm, Page, PageHeader, TextLink, VaultSummary } from '@poc/ui'
+import { Badge, DepositForm, DropdownMenu, Page, PageHeader, TextLink, VaultSummary } from '@poc/ui'
 import Link from 'next/link'
 import { useState } from 'react'
 import { en } from '../messages/en'
@@ -23,6 +23,7 @@ export const DepositScreen = () => {
   const [value, setValue] = useState('')
   const [deposited, setDeposited] = useState(0)
   const [submitting, setSubmitting] = useState(false)
+  const [network, setNetwork] = useState(m.networks[0].value)
   const error = validate(value)
 
   const handleSubmit = () => {
@@ -52,7 +53,16 @@ export const DepositScreen = () => {
         />
         <DepositForm
           title={m.formTitle}
-          network={m.network}
+          network={
+            <DropdownMenu
+              label={m.networkLabel}
+              options={m.networks}
+              value={network}
+              onValueChange={setNetwork}
+              disabled={submitting}
+              align="end"
+            />
+          }
           amountLabel={m.amountLabel}
           amountPlaceholder={m.amountPlaceholder}
           balanceHint={m.balanceHint(usdc.format(BALANCE - deposited))}

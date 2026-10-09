@@ -20,6 +20,10 @@ and report it: that's a code change for a human-reviewed commit, not a sync.
 
 - Paper desktop open on the POC file ("Jazzy nest", or your copy of it); call `get_guide("paper-mcp-instructions")` once.
 - Clean working tree. Read `FINDINGS.md` if a rule below is unclear: it explains why.
+- For new visual designs created through MCP, follow
+  [paper-design-review](../paper-design-review/SKILL.md) and verify the user's approval of the
+  completed appearance before step 0 or any implementation. If review is pending, present the
+  designs and stop before writing product code or snapshots. Approval covers the reviewed scope.
 
 ## 0. What changed in Paper (snapshots)
 
@@ -30,7 +34,7 @@ Source boards and their snapshot files:
 | --------------------------------------------------- | ------------------------------------------ |
 | Tokens › Colors & Type                              | `paper-snapshots/Tokens/ColorsAndType.txt` |
 | Tokens › Typography                                 | `paper-snapshots/Tokens/Typography.txt`    |
-| Components › Button, Input, Badge, Card, CopyButton | `paper-snapshots/Components/<Board>.txt`   |
+| Components › Button, Input, Badge, Card, CopyButton, DropdownMenu | `paper-snapshots/Components/<Board>.txt`   |
 | Blocks › DepositForm, VaultSummary, PageHeader      | `paper-snapshots/Blocks/<Board>.txt`       |
 | Icons › Mono, Color                                 | `paper-snapshots/Icons/<Board>.txt`        |
 

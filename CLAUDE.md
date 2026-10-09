@@ -18,6 +18,10 @@ See `README.md` (phases, success bar) and `FINDINGS.md` (every decision and why)
 - **Code owns behaviour**: `.tsx` files (markup, hooks, a11y, states), the focus ring
   (`focusRing.ts`; Paper owns only `--color-focus`).
 - A visual fix made in code must be pushed to Paper (`/code-to-paper`) or the next sync reverts it.
+- New visual designs created through MCP require the user's review of the completed appearance
+  before local implementation, sync, or design-export snapshots. Follow
+  [paper-design-review](.claude/skills/paper-design-review/SKILL.md); agent screenshot checks
+  do not count as user approval.
 
 ## Rules (lint-enforced; read the message when it fires)
 

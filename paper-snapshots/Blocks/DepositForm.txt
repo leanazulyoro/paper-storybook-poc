@@ -1,4 +1,4 @@
-    <div className="[font-synthesis:none] wrap-anywhere flex overflow-clip font-sans flex-col p-8 gap-4 bg-muted antialiased size-fit">
+    <div className="[font-synthesis:none] wrap-anywhere text-xs leading-4 flex overflow-clip font-sans flex-col p-8 gap-4 bg-muted antialiased size-fit">
       <div className="font-medium tracking-wide uppercase font-[system-ui,sans-serif] text-muted-foreground text-xs/tight">
         DepositForm
       </div>
@@ -8,8 +8,88 @@
             <div className="font-semibold font-[system-ui,sans-serif] text-foreground text-base/normal">
               Deposit USDC
             </div>
-            <div className="font-[system-ui,sans-serif] text-muted-foreground text-sm/tight">
-              Ethereum
+            <div className="flex items-center justify-center h-[40px] w-max px-4 rounded-md gap-2 bg-muted border border-solid border-border">
+              <div className="font-sans font-semibold w-max text-foreground text-sm/tight">
+                Ethereum
+              </div>
+              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block' }}>
+                <path d="M4 6L8 10L12 6" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          </div>
+          <div className="flex flex-col p-6 gap-4">
+            <div className="flex flex-col w-full gap-2">
+              <div className="font-medium font-[system-ui,sans-serif] text-foreground text-sm/tight">
+                Amount
+              </div>
+              <div className="flex items-center h-[44px] px-3 rounded-md shrink-0 [background-color:var(--color-background)] border border-solid border-border">
+                <div className="font-[system-ui,sans-serif] text-muted-foreground text-sm/tight">
+                  0.00
+                </div>
+              </div>
+              <div className="font-[system-ui,sans-serif] text-muted-foreground text-xs/tight">
+                Balance: 1,240.50 USDC
+              </div>
+            </div>
+            <div className="flex gap-1">
+              <div className="font-[system-ui,sans-serif] text-muted-foreground text-xs/tight">
+                By depositing you accept the
+              </div>
+              <div className="font-medium font-[system-ui,sans-serif] underline-offset-2 [text-decoration:underline_1px] [color:var(--color-primary)] text-xs/tight">
+                vault terms
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-end py-4 px-6 gap-2 border-t border-t-solid border-t-border">
+            <div className="flex items-center justify-center h-[40px] font-semibold px-4 rounded-md grow opacity-disabled [background-color:var(--color-primary)]">
+              <div className="flex font-semibold font-[system-ui,sans-serif] [color:var(--color-primary-foreground)] text-sm/tight">
+                Deposit
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col w-sm rounded-md shrink-0 [background-color:var(--color-background)] border border-solid border-border">
+          <div className="flex justify-between py-4 px-6 flex-col gap-2 relative border-b border-b-solid border-b-border">
+            <div className="flex items-center justify-between w-full gap-4">
+              <div className="font-semibold flex-1 font-[system-ui,sans-serif] text-foreground text-base/normal">
+                Deposit USDC
+              </div>
+              <div className="flex items-center justify-center h-[40px] w-max px-4 rounded-md gap-2 bg-muted border border-solid border-border">
+                <div className="font-sans font-semibold w-max text-foreground text-sm/tight">
+                  Ethereum
+                </div>
+                <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block' }}>
+                  <path d="M4 10L8 6L12 10" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </div>
+            <div className="flex flex-col w-[232px] p-1 rounded-md absolute top-[calc(56px+var(--spacing-2))] right-6 [background-color:var(--color-background)] border border-solid border-border">
+              <div className="flex items-center h-[40px] px-3 rounded-sm justify-between gap-3 shrink-0 bg-(--color-primary)/tint">
+                <div className="font-sans font-normal w-max text-foreground text-sm/tight">
+                  Ethereum
+                </div>
+                <svg width="24" height="24" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', height: '16px', width: '16px', flexShrink: '0' }}>
+                  <path d="M3 8.5l3 3 7-7" fill="none" stroke="var(--color-primary)" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <div className="flex items-center h-[40px] px-3 rounded-sm justify-between gap-3 shrink-0 bg-muted">
+                <div className="font-sans font-normal w-max text-foreground text-sm/tight">
+                  Arbitrum
+                </div>
+                <div className="shrink-0 size-4" />
+              </div>
+              <div className="flex items-center h-[40px] px-3 rounded-sm justify-between gap-3 shrink-0">
+                <div className="font-sans font-normal w-max text-foreground text-sm/tight">
+                  Base
+                </div>
+                <div className="shrink-0 size-4" />
+              </div>
+              <div className="flex items-center h-[40px] px-3 rounded-sm justify-between gap-3 opacity-disabled shrink-0">
+                <div className="font-sans font-normal w-max text-foreground text-sm/tight">
+                  Polygon
+                </div>
+                <div className="shrink-0 size-4" />
+              </div>
             </div>
           </div>
           <div className="flex flex-col p-6 gap-4">
@@ -48,8 +128,13 @@
             <div className="font-semibold font-[system-ui,sans-serif] text-foreground text-base/normal">
               Deposit USDC
             </div>
-            <div className="font-[system-ui,sans-serif] text-muted-foreground text-sm/tight">
-              Ethereum
+            <div className="flex items-center justify-center h-[40px] w-max px-4 rounded-md gap-2 bg-muted border border-solid border-border">
+              <div className="font-sans font-semibold w-max text-foreground text-sm/tight">
+                Ethereum
+              </div>
+              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block' }}>
+                <path d="M4 6L8 10L12 6" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
           </div>
           <div className="flex flex-col p-6 gap-4">
@@ -88,8 +173,13 @@
             <div className="font-semibold font-[system-ui,sans-serif] text-foreground text-base/normal">
               USDC einzahlen
             </div>
-            <div className="font-[system-ui,sans-serif] text-muted-foreground text-sm/tight">
-              Ethereum-Hauptnetz
+            <div className="flex items-center justify-center h-[40px] w-max px-4 rounded-md gap-2 bg-muted border border-solid border-border">
+              <div className="font-sans font-semibold w-max text-foreground text-sm/tight">
+                Ethereum
+              </div>
+              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block' }}>
+                <path d="M4 6L8 10L12 6" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
           </div>
           <div className="flex flex-col p-6 gap-4">

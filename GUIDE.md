@@ -64,6 +64,14 @@ Check: ask your agent "list the pages of my open Paper file". Cursor and Codex d
 skills: `AGENTS.md` points them at the same instructions (`.claude/skills/*/SKILL.md` are plain
 markdown).
 
+For new visual designs created through MCP, follow
+[paper-design-review](.claude/skills/paper-design-review/SKILL.md): create and quality-check the
+designs in Paper, show screenshots and a file/page link, and wait for the user's review of the
+completed appearance before local implementation or sync. Agent screenshot checks are separate
+from this human checkpoint; meaningful revisions need another review. Keep review images outside
+product code and `paper-snapshots/` until approval. Workflow documentation can be prepared earlier
+and belongs in a separate non-sync commit.
+
 ## 4. Experiments
 
 Do each on a fresh branch. The first sync on a branch has no snapshots yet: it compares every
@@ -75,6 +83,8 @@ board once and writes `paper-snapshots/` (slower); later syncs only look at what
    (duplicate `Button/Secondary`, rename it `Button/Secondary/Active`, change its background), a
    new icon on the Mono board.
 2. Ask your agent: _"I changed the Paper file, sync it into the code"_ (Claude Code: `/paper-to-code`).
+   If the agent created a new visual design through MCP, first complete the user review above;
+   a sync request alone does not establish approval of its completed appearance.
 3. Check:
    - the diff touches only style files, tokens, icons and `paper-snapshots/`;
    - `pnpm lint && pnpm typecheck && pnpm test` pass;

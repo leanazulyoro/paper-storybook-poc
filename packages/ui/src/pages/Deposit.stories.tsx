@@ -3,6 +3,7 @@
 // with sample data, so Storybook and Paper can be compared screen to screen.
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
+import { NetworkDropdown } from '../stories/NetworkDropdown'
 import { Badge } from '../components/Badge'
 import { TextLink } from '../components/TextLink'
 import { DepositForm } from '../blocks/DepositForm'
@@ -30,7 +31,7 @@ const DepositPage = ({ value: initialValue, error, deposit, submitting }: Args) 
         />
         <DepositForm
           title="Deposit USDC"
-          network="Ethereum"
+          network={<NetworkDropdown align="end" />}
           amountLabel="Amount"
           amountPlaceholder="0.00"
           balanceHint="Balance: 1,240.50 USDC"

@@ -8,7 +8,7 @@ import { depositFormStyles as s } from './DepositForm.styles'
 
 export type DepositFormProps = {
   title: ReactNode
-  /** Header slot, e.g. the network name. */
+  /** Header slot, e.g. a controlled DropdownMenu network selector. */
   network?: ReactNode
   amountLabel: string
   amountPlaceholder?: string

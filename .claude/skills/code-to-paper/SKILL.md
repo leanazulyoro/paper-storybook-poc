@@ -15,6 +15,11 @@ is a separate node and must be updated.
 
 Paper desktop open on the POC file ("Jazzy nest", or your copy of it); `get_guide("paper-mcp-instructions")` once.
 
+If this push also creates a new visual design, follow
+[paper-design-review](../paper-design-review/SKILL.md) before subsequent local implementation,
+Paper → code sync, or snapshot refresh. Mirroring an existing code design alone does not add
+this checkpoint; honor any explicit user review requirement on the current edits.
+
 ## Steps
 
 1. **List the change** as CSS: e.g. `h-10` → `h-11` on Input's `Field` = `height: 44px`.

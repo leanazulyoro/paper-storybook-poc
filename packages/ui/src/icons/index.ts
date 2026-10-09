@@ -1,5 +1,7 @@
 export { IconArrowRight } from './mono/IconArrowRight'
 export { IconCheck } from './mono/IconCheck'
 export { IconCopy } from './mono/IconCopy'
+export { IconChevronDown } from './mono/IconChevronDown'
+export { IconChevronUp } from './mono/IconChevronUp'
 export { IconPocMark } from './color/IconPocMark'
 export type { IconSvgProps } from './types'
