@@ -82,8 +82,9 @@ add/change the token in Paper's token panel (then re-sync). Lead the report with
 ## 1. Tokens
 
 Save `get_tokens({ format: "tailwind" })` output to a scratch file, then
-`node scripts/write-tokens.mjs <file> <contentHash.tokens>`. It writes `theme.css` (header,
-hash, lowercase hex). Never hand-edit tokens in code.
+`node scripts/write-tokens.mjs <file> <contentHash.tokens> [<config key>]`. It writes `theme.css`
+(header naming the file read, hash, lowercase hex); pass the `paper.config.json` key when the file
+read isn't `source` (e.g. a round-trip check of a new file). Never hand-edit tokens in code.
 
 ## 1b. Typography (text styles)
 
@@ -138,23 +139,31 @@ Mapping rules:
 - Text layer of a single-label component (Button, Badge): its text classes go on the root
   (the label is `children`). Text layer `w-max` (Paper's "no wrap") → `whitespace-nowrap`.
 - SVG `stroke`/`fill="var(--color-x)"` inside a component → icon `text-x` (icons paint `currentColor`).
-- Ignore board-only styles: artboard padding/background, board `flex-wrap`, `wrap-anywhere`,
-  `antialiased`, sample frame sizes (`w-[232px]`, a board column's `shrink-0`), sample copy (all
-  text comes from props in code).
+- Ignore board-only styles: artboard padding/background/`overflow-clip`/fixed width, board
+  `flex-wrap`, `wrap-anywhere`, `antialiased`, sample frame sizes (`w-[232px]`, a board column's
+  `shrink-0`), sample copy (all text comes from props in code), and the board's `Label`,
+  `Caption`, `Section/*` and `Column/*` layers. Those texts live in the stories
+  (`parameters.paper`, `src/stories/paperBoard.tsx`): if the designer changed one, report it as a
+  story to-do, never sync it.
+- `border-solid` is the default border style: drop it.
 - **Font family is inherited:** never emit `font-sans`, `font-[system-ui,…]` or
   `[font-family:var(--font-sans)]`. The body sets `font-sans` (`styles/index.css`) and Tailwind's
   preflight makes controls inherit it. Emit a family only when it isn't `--font-sans` (e.g. a mono
   token).
 - **Equivalent is not different.** Paper can't express some CSS, so a few exports differ from code
   without differing in look. Keep the code's form:
-  - a component root exported `flex` stays `inline-flex` where the code has it (Button, Badge,
-    CopyButton, DropdownMenu trigger: Paper has no inline layout);
+  - `flex` stays `inline-flex` on any key where the code has it (Button, Badge, CopyButton,
+    DropdownMenu trigger and indicator: Paper has no inline layout);
   - `grow` → `flex-1`;
   - Input: Paper wraps the placeholder in a flex box (`flex items-center shrink-0` on `Field`);
     a native `<input>` centres its own text, so drop those. The `Placeholder` layer's colour →
     the `placeholder:` key; a `Value` layer's colour is the field's text colour;
   - a text colour equal to its parent's is inherited: keep whatever the key has, don't add or drop
     it;
+  - a text style on every text child (VaultSummary's `Stat` row: label and value both `text-body`)
+    is the parent's when the code puts it on the parent key: keep it there;
+  - a `Terms` row (text + link layers): the row's own layout (`flex flex-wrap gap-x-1`) is a
+    drawing artefact; map only its text layers;
   - the page artboard's fixed height (`h-[900px]`) → `min-h-screen`.
 - A colour not bound to a token (`text-black`, raw hex) has no code equivalent (`reset.css` drops
   Tailwind's defaults): keep the existing token class and report it (step 0b).
@@ -184,6 +193,8 @@ designer fixes them, or `/code-to-paper` does.
 
 - Strip `width`/`height`/`style` from the root; keep `viewBox`; spread `{...iconDefaults} {...props}`.
 - Mono: every `stroke`/`fill` colour → `currentColor` (`none` stays). No defs allowed.
+- Paper's export repeats a root `fill`/`stroke` on every child: where the code icon has it on the
+  `<svg>` root (`fill="none"`), keep it there and leave it off the children (same render).
 - Color: keep token (`var(--color-*)`) and brand hex colours. Replace Paper's ids (`_8Z-0__…`)
   with ids from `useId()`, and `url(#…)` with the same. Convert raw defs markup to JSX
   (`stop-color` → `stopColor`).

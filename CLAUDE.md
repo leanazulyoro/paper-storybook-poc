@@ -43,7 +43,9 @@ See `README.md` (phases, success bar) and `FINDINGS.md` (every decision and why)
 
 Sections mirror the Paper pages: Tokens, Icons, Components, Blocks, Pages. `States` stories show
 interaction states side by side (pseudo-states addon) for 1:1 comparison with Paper's state
-frames. Stories that mirror a Paper frame are tagged `paper` (with `parameters.paper` naming the
-frame); untagged stories are code-only (behaviour tests, stress cases) and never compared with
+frames. Stories that mirror a Paper frame are tagged `paper`; `parameters.paper` is their board spec
+(page › board, frame, label, caption, surface, width, layout: `src/stories/paperBoard.tsx`),
+declared once on `meta`, drawn around the story in Storybook and used to build the Paper board.
+Untagged stories are code-only (behaviour tests, stress cases) and never compared with
 Paper. Keyboard tests of Base UI popups use `src/stories/listKeyboard.ts` (waits for each key to take
 effect; Base UI drops keys right after opening).

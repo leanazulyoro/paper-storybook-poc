@@ -70,11 +70,26 @@ When the target entry in `paper.config.json` has `"id": null`, the file doesn't 
    Pages, with the page names and boards listed in `paper-to-code` step 0 (`arrange_pages` sets
    their order).
    - **Code is the only source:** classes from `*.styles.ts`, structure from the `.tsx`, variants,
-     sample copy and board contents from the `paper`-tagged stories (`parameters.paper` names the
-     board). `paper-snapshots/` describe another file: don't read them.
-   - **Names:** one board per component/block, named after it; frames `Component/Variant[/State]`
-     from the styles files' `// Frame/Name` comments, one per `paper` story variant for blocks
-     (`PageHeader/Default`, `PageHeader/LongText`); repeated rows `Row/<Label>` (`Stat/TVL`).
+     sample copy and board contents from the `paper`-tagged stories. `paper-snapshots/` describe
+     another file: don't read them.
+   - **Boards come from `parameters.paper`** (type and fields: `src/stories/paperBoard.tsx`;
+     Storybook draws the same framing, so it is the visual reference). One board per `board`
+     (`Page › Board`); its frames are its `paper` stories in story order: a story with `frame` is
+     that one frame, a multi-variant story (`AllVariants`, `States`) contributes its frames, named
+     from the styles files' `// Frame/Name` comments. Draw what the story renders, its section
+     headers and column labels included (layers `Section/<text>`, `Column/<text>`).
+   - **Board look:** padding 32px, gap 16px; `label` (default: the board name) on top as a text
+     layer `Label` in uppercase, 12/20 medium, `tracking-wide`, muted-foreground; `caption` under
+     the frames as `Caption`, same style, line breaks kept; background `surface` (default
+     background); `width` px or fit content; frames per `layout`: `row` = side by side, top
+     aligned, gap 32px; `wrap` = wrapping row, gap 24px; `column` (default) = stacked, gap 24px.
+     A `frameless` story is the artboard itself (Pages): no label, caption or padding.
+   - **Placement:** a page's boards left to right in Storybook sidebar order, top aligned, 160px
+     apart.
+   - **Names:** frames `Component/Variant[/State]`; repeated rows `Row/<Label>` (`Stat/TVL`); a
+     text with an inline link (terms) is a `Terms` row of `Text` and `Link` layers.
+   - **Focus frames:** draw a `…/Focus` reference frame only where a `States` story has a Focus
+     column.
    - **Text layers use `var(--font-sans)`** so the file looks like the app (Paper defaults to
      system-ui); mapping ignores the family (`paper-to-code`: font family is inherited).
    - **Typography:** Paper's MCP can't create text styles. Build the Typography board as one
