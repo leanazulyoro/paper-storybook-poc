@@ -18,6 +18,8 @@ export default meta
 type Story = StoryObj<typeof Card>
 
 export const Default: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Components › Card' },
   render: () => (
     <Card>
       <CardHeader title="USDC Vault" action="Ethereum" />

@@ -54,6 +54,8 @@ export const ResetsAfterTimeout: Story = {
 
 // Mirrors the Paper board.
 export const AllVariants: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Components › CopyButton' },
   render: (args) => (
     <div className="flex items-center gap-4">
       <CopyButton {...args} />
@@ -68,7 +70,8 @@ export const AllVariants: Story = {
 // Interaction states forced via pseudo-states; compare with the Paper CopyButton board
 // (CopyButton/Idle, CopyButton/Idle/Focus, CopyButton/Copied). Copied is a data state: clicked.
 export const States: Story = {
-  parameters: { pseudo },
+  tags: ['paper'],
+  parameters: { paper: 'Components › CopyButton (state frames)', pseudo },
   render: (args) => (
     <StatesBoard
       columns={['Idle', 'Focus', 'Copied']}

@@ -70,9 +70,7 @@ export const DepositScreen = () => {
           value={value}
           onValueChange={setValue}
           terms={m.terms((text) => (
-            <TextLink>
-              <Link href="/terms">{text}</Link>
-            </TextLink>
+            <TextLink render={<Link href="/terms" />}>{text}</TextLink>
           ))}
           submitLabel={submitting ? m.submitting : m.submit}
           submitting={submitting}

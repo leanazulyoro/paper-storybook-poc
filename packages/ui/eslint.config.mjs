@@ -1,8 +1,9 @@
 import tseslint from 'typescript-eslint'
 
 // Classes the .tsx may own: behaviour/a11y, never Paper visuals. Focus ring comes only from
-// src/focusRing.ts, so no literal focus-visible: here.
-const CODE_OWNED = '/^((disabled:cursor-|cursor-|sr-only)\\S*\\s*)+$/'
+// src/focusRing.ts, so no literal focus-visible: here. Motion (transition-*) is code-owned: Paper
+// can't express it.
+const CODE_OWNED = '/^((data-disabled:cursor-|disabled:cursor-|cursor-|transition-|sr-only)\\S*\\s*)+$/'
 const FOCUS = '/focus(-visible|-within)?:/'
 
 // ui policy (stories and story-only helpers in src/stories exempt: they supply sample copy and
@@ -33,10 +34,11 @@ const policy = [
     selector: `:matches(JSXAttribute[name.name="className"], CallExpression[callee.name="cn"]) Literal[value=${FOCUS}]`,
     message: 'Use focusRing (src/focusRing.ts): one ring for every component, look set by Paper tokens.',
   },
-  // Links: ui never renders <a>; the app passes its own link via a slot or asChild.
+  // Links: ui never renders <a>; the app passes its own link via a slot or a `render` prop.
   {
     selector: 'JSXOpeningElement[name.name="a"]',
-    message: 'No <a> in ui: accept a link via a ReactNode slot, <TextLink>, or <Button asChild>.',
+    message:
+      'No <a> in ui: accept a link via a ReactNode slot or a `render` prop (<TextLink render>, <Button render>).',
   },
 ]
 
@@ -92,7 +94,15 @@ const config = tseslint.config(
       // ui stays framework-agnostic: no Next.js (or other app framework) imports.
       'no-restricted-imports': [
         'error',
-        { patterns: [{ group: ['next', 'next/*'], message: 'ui must not depend on Next.js.' }] },
+        {
+          patterns: [
+            { group: ['next', 'next/*'], message: 'ui must not depend on Next.js.' },
+            {
+              group: ['@radix-ui/*', 'radix-ui'],
+              message: 'Base UI is the headless foundation (as in the webapp): use @base-ui/react.',
+            },
+          ],
+        },
       ],
     },
   },

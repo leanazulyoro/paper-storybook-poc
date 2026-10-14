@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { expect, fn, userEvent, within } from 'storybook/test'
+import { expect, fn, userEvent, within, waitFor } from 'storybook/test'
 import { NetworkDropdown, networks } from '../stories/NetworkDropdown'
 import { pseudo } from '../stories/StatesBoard'
+import { Button } from './Button'
 import { DropdownMenu } from './DropdownMenu'
 
 const meta: Meta<typeof DropdownMenu> = {
@@ -23,119 +24,165 @@ type Story = StoryObj<typeof DropdownMenu>
 export const Default: Story = {}
 export const Disabled: Story = { args: { disabled: true } }
 
+// Room to the left, so this checks end alignment, not collision avoidance (Base UI shifts a
+// popup that would overflow the viewport).
 export const End: Story = {
   args: { align: 'end' },
+  render: (args) => (
+    <div className="flex w-[480px] justify-end">
+      <NetworkDropdown {...args} />
+    </div>
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
+    const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
     const trigger = canvas.getByRole('combobox')
     await userEvent.click(trigger)
-    const popup = canvas.getByRole('listbox')
+    const popup = await page.findByRole('listbox')
     const triggerBox = trigger.getBoundingClientRect()
     const popupBox = popup.getBoundingClientRect()
     await expect(popupBox.right).toBeCloseTo(triggerBox.right, 1)
     await expect(popupBox.top - triggerBox.bottom).toBeCloseTo(8, 1)
-    await userEvent.click(canvas.getByRole('option', { name: 'Base' }))
+    await userEvent.click(await page.findByRole('option', { name: 'Base' }))
     await expect(trigger).toHaveTextContent('Base')
-    await expect(trigger).toHaveFocus()
+    await waitFor(() => expect(trigger).toHaveFocus())
   },
 }
 
 // The reviewed open view: Ethereum selected, Arbitrum hovered, Polygon disabled.
 export const Open: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Components › DropdownMenu › Open · align start' },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
+    const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
     await userEvent.click(canvas.getByRole('combobox'))
-    await userEvent.hover(canvas.getByRole('option', { name: 'Arbitrum' }))
+    await userEvent.hover(await page.findByRole('option', { name: 'Arbitrum' }))
   },
 }
 
 export const PointerSelection: Story = {
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement)
+    const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
     const trigger = canvas.getByRole('combobox')
     await userEvent.click(trigger)
-    await expect(canvas.getByRole('option', { name: 'Ethereum' })).toHaveAttribute('aria-selected', 'true')
-    const disabled = canvas.getByRole('option', { name: 'Polygon' })
+    await expect(await page.findByRole('option', { name: 'Ethereum' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    )
+    const disabled = await page.findByRole('option', { name: 'Polygon' })
     await expect(disabled).toHaveAttribute('aria-disabled', 'true')
     await userEvent.click(disabled)
     await expect(args.onValueChange).not.toHaveBeenCalled()
     await expect(trigger).toHaveTextContent('Ethereum')
     await expect(trigger).toHaveAttribute('aria-expanded', 'true')
-    await userEvent.click(canvas.getByRole('option', { name: 'Base' }))
+    await userEvent.click(await page.findByRole('option', { name: 'Base' }))
     await expect(args.onValueChange).toHaveBeenCalledWith('base')
     await expect(trigger).toHaveTextContent('Base')
-    await expect(trigger).toHaveFocus()
-    await expect(canvas.queryByRole('listbox')).not.toBeInTheDocument()
+    await waitFor(() => expect(trigger).toHaveFocus())
+    await waitFor(() => expect(page.queryByRole('listbox')).not.toBeInTheDocument())
   },
 }
 
 export const KeyboardSelection: Story = {
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement)
+    const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
     const trigger = canvas.getByRole('combobox')
+    // Base UI moves focus to the highlighted option (not aria-activedescendant on the trigger).
+    const current = () =>
+      page.queryAllByRole('option').find((o) => o.hasAttribute('data-highlighted'))?.textContent
+    // Base UI ignores list keys until the popup has finished opening (slower under load, e.g. CI),
+    // so press until the key takes effect: wait for the result, not for a fixed time.
+    const step = (key: string, expected: string) =>
+      waitFor(
+        async () => {
+          if (current() !== expected) await userEvent.keyboard(key)
+          if (current() !== expected) throw new Error(`expected ${expected} highlighted, got ${current()}`)
+        },
+        { timeout: 3000, interval: 100 },
+      )
+    const open = async (key: string) => {
+      await waitFor(() => expect(trigger).toHaveFocus())
+      await userEvent.keyboard(key)
+      await page.findByRole('listbox')
+    }
     trigger.focus()
-    await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}{ArrowDown}')
-    await expect(trigger).toHaveAttribute(
-      'aria-activedescendant',
-      canvas.getByRole('option', { name: 'Base' }).id,
-    )
+    await open('{ArrowDown}')
+    await waitFor(() => expect(current()).toBe('Ethereum')) // opens on the selected option
+    await step('{ArrowDown}', 'Arbitrum')
+    await step('{ArrowDown}', 'Base')
     await expect(trigger).toHaveTextContent('Ethereum')
     await expect(args.onValueChange).not.toHaveBeenCalled()
     await userEvent.keyboard('{Escape}')
-    await expect(trigger).toHaveFocus()
-    await expect(trigger).toHaveAttribute('aria-expanded', 'false')
+    await waitFor(() => expect(trigger).toHaveFocus())
+    await waitFor(() => expect(trigger).toHaveAttribute('aria-expanded', 'false'))
     await expect(args.onValueChange).not.toHaveBeenCalled()
-    await userEvent.keyboard('{Enter}{End}{Enter}')
-    await expect(args.onValueChange).toHaveBeenCalledWith('base')
+    await open('{Enter}')
+    // Disabled options stay reachable by keyboard but not selectable: End lands on Polygon.
+    await step('{End}', 'Polygon')
+    await userEvent.keyboard('{Enter}')
+    await expect(args.onValueChange).not.toHaveBeenCalled()
+    await step('{ArrowUp}', 'Base')
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() => expect(args.onValueChange).toHaveBeenCalledWith('base'))
     await expect(trigger).toHaveTextContent('Base')
-    await expect(trigger).toHaveAttribute('aria-expanded', 'false')
-    await userEvent.keyboard('{Enter}{Home} ')
-    await expect(trigger).toHaveTextContent('Ethereum')
-    await userEvent.keyboard('b{Enter}')
-    await expect(trigger).toHaveTextContent('Base')
+    await waitFor(() => expect(trigger).toHaveAttribute('aria-expanded', 'false'))
+    await open('{Enter}')
+    await step('{Home}', 'Ethereum')
+    await userEvent.keyboard(' ')
+    await waitFor(() => expect(trigger).toHaveTextContent('Ethereum'))
+    await open('{Enter}')
+    await step('b', 'Base') // typeahead
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() => expect(trigger).toHaveTextContent('Base'))
   },
 }
 
 export const TabAndOutsideDismissal: Story = {
   render: (args) => (
-    <>
+    <div className="flex items-start gap-4">
       <NetworkDropdown {...args} />
-      <button type="button">Next control</button>
-    </>
+      <Button variant="secondary">Next control</Button>
+    </div>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
+    const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
     const trigger = canvas.getByRole('combobox')
     const next = canvas.getByRole('button', { name: 'Next control' })
     trigger.focus()
     await userEvent.keyboard('{ArrowDown}{ArrowDown}')
     await userEvent.tab()
     await expect(next).toHaveFocus()
-    await expect(trigger).toHaveTextContent('Arbitrum')
+    // Base UI: Tab closes without selecting (the hand-written version committed the highlight).
+    await expect(trigger).toHaveTextContent('Ethereum')
     await expect(trigger).toHaveAttribute('aria-expanded', 'false')
     await userEvent.click(trigger)
     await userEvent.click(next)
     await expect(next).toHaveFocus()
-    await expect(canvas.queryByRole('listbox')).not.toBeInTheDocument()
+    await waitFor(() => expect(page.queryByRole('listbox')).not.toBeInTheDocument())
   },
 }
 
 // Hovering only highlights: clicking outside closes the menu and keeps the selected value,
-// like a native <select>. (Tab still commits the keyboard-active option, see above.)
+// like a native <select>. (Tab also closes without selecting: Base UI's behaviour.)
 export const HoverThenOutsideClickKeepsValue: Story = {
   render: (args) => (
-    <>
+    <div className="flex items-start gap-4">
       <NetworkDropdown {...args} />
-      <button type="button">Next control</button>
-    </>
+      <Button variant="secondary">Next control</Button>
+    </div>
   ),
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement)
+    const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
     const trigger = canvas.getByRole('combobox')
     await userEvent.click(trigger)
-    await userEvent.hover(canvas.getByRole('option', { name: 'Base' }))
+    await userEvent.hover(await page.findByRole('option', { name: 'Base' }))
     await userEvent.click(canvas.getByRole('button', { name: 'Next control' }))
-    await expect(canvas.queryByRole('listbox')).not.toBeInTheDocument()
+    await waitFor(() => expect(page.queryByRole('listbox')).not.toBeInTheDocument())
     await expect(trigger).toHaveTextContent('Ethereum')
     await expect(args.onValueChange).not.toHaveBeenCalled()
   },
@@ -153,7 +200,11 @@ export const DisabledTrigger: Story = {
 }
 
 export const States: Story = {
-  parameters: { pseudo: { ...pseudo, hover: ['[data-state="hover"] [role="combobox"]'] } },
+  tags: ['paper'],
+  parameters: {
+    paper: 'Components › DropdownMenu (trigger states)',
+    pseudo: { ...pseudo, hover: ['[data-state="hover"] [role="combobox"]'] },
+  },
   decorators: [
     (Story) => (
       <div className="h-80 w-[824px] p-8">
@@ -189,7 +240,8 @@ export const States: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    for (const option of canvas.getAllByRole('option', { name: 'Arbitrum' })) {
+    const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
+    for (const option of await page.findAllByRole('option', { name: 'Arbitrum' })) {
       await userEvent.hover(option)
     }
   },

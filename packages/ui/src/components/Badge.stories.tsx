@@ -14,6 +14,8 @@ export const Neutral: Story = { args: { tone: 'neutral', children: 'Paused' } }
 
 // Mirrors the Paper board.
 export const AllVariants: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Components › Badge' },
   render: () => (
     <div className="flex items-center gap-3">
       <Badge tone="success">Active</Badge>

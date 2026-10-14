@@ -9,8 +9,10 @@ const meta: Meta<typeof PageHeader> = {
 export default meta
 type Story = StoryObj<typeof PageHeader>
 
-export const Default: Story = {}
+export const Default: Story = { tags: ['paper'], parameters: { paper: 'Blocks › PageHeader' } }
 export const LongText: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Blocks › PageHeader (long text)' },
   args: {
     title: 'Einzahlung in den Tresor',
     description: 'Erzielen Sie eine variable Rendite auf ungenutzte USDC. Auszahlung jederzeit möglich.',

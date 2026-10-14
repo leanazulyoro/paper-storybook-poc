@@ -14,13 +14,15 @@ export const Primary: Story = {}
 export const Secondary: Story = { args: { variant: 'secondary', children: 'Withdraw' } }
 export const Disabled: Story = { args: { disabled: true } }
 
-// asChild: the app's link (next/link in apps/web) styled as a button.
+// render: the app's link (next/link in apps/web) styled as a button.
 export const AsLink: Story = {
-  args: { asChild: true, variant: 'secondary', children: <a href="#vaults">View vaults</a> },
+  args: { render: <a href="#vaults" />, variant: 'secondary', children: 'View vaults' },
 }
 
 // Mirrors the Paper board.
 export const AllVariants: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Components › Button' },
   render: () => (
     <div className="flex items-center gap-4">
       <Button>Deposit</Button>
@@ -34,7 +36,8 @@ export const AllVariants: Story = {
 // (Button/Primary/Hover, Button/Secondary/Hover, Button/Primary/Focus, Button/Disabled).
 // "Disabled + hover" checks that hover never applies to a disabled button.
 export const States: Story = {
-  parameters: { pseudo },
+  tags: ['paper'],
+  parameters: { paper: 'Components › Button (state frames)', pseudo },
   render: () => (
     <StatesBoard
       columns={['Default', 'Hover', 'Focus', 'Disabled', 'Disabled + hover']}

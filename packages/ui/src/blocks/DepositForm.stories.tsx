@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
-import { expect, userEvent, within } from 'storybook/test'
+import { expect, userEvent, within, waitFor } from 'storybook/test'
 import { NetworkDropdown } from '../stories/NetworkDropdown'
 import { TextLink } from '../components/TextLink'
 import { DepositForm, type DepositFormProps } from './DepositForm'
@@ -24,10 +24,7 @@ const meta: Meta<typeof DepositForm> = {
     value: '',
     terms: (
       <>
-        By depositing you accept the{' '}
-        <TextLink>
-          <a href="#terms">vault terms</a>
-        </TextLink>
+        By depositing you accept the <TextLink render={<a href="#terms" />}>vault terms</TextLink>
       </>
     ),
     submitLabel: 'Deposit',
@@ -41,13 +38,19 @@ const meta: Meta<typeof DepositForm> = {
 export default meta
 type Story = StoryObj<typeof DepositForm>
 
-export const Default: Story = {}
+export const Default: Story = { tags: ['paper'], parameters: { paper: 'Blocks › DepositForm/Default' } }
 export const WithValue: Story = { args: { value: '250.00' } }
-export const Error: Story = { args: { value: '2,000.00', error: 'Exceeds balance' } }
+export const Error: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Blocks › DepositForm/Error' },
+  args: { value: '2,000.00', error: 'Exceeds balance' },
+}
 export const Submitting: Story = { args: { value: '250.00', submitting: true, submitLabel: 'Depositing…' } }
 
 // i18n stress test: long German strings, link mid-sentence.
 export const LongText: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Blocks › DepositForm/LongText' },
   args: {
     title: 'USDC einzahlen',
     network: <NetworkDropdown label="Netzwerk" align="end" />,
@@ -56,10 +59,8 @@ export const LongText: Story = {
     terms: (
       <>
         Mit der Einzahlung akzeptieren Sie die{' '}
-        <TextLink>
-          <a href="#terms">Nutzungsbedingungen des Tresors</a>
-        </TextLink>{' '}
-        sowie die Risikohinweise.
+        <TextLink render={<a href="#terms" />}>Nutzungsbedingungen des Tresors</TextLink> sowie die
+        Risikohinweise.
       </>
     ),
     submitLabel: 'Jetzt einzahlen',
@@ -67,33 +68,38 @@ export const LongText: Story = {
 }
 
 export const NetworkOpen: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Blocks › DepositForm/NetworkOpen' },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
+    const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
     await userEvent.click(canvas.getByRole('combobox'))
-    await userEvent.hover(canvas.getByRole('option', { name: 'Arbitrum' }))
+    await userEvent.hover(await page.findByRole('option', { name: 'Arbitrum' }))
   },
 }
 
 export const NetworkSelection: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
+    const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
     const trigger = canvas.getByRole('combobox')
     const amount = canvas.getByRole('textbox', { name: 'Amount' })
     const form = amount.closest('section')!
     const formBefore = form.getBoundingClientRect()
     const amountBefore = amount.getBoundingClientRect()
     await userEvent.click(trigger)
-    const popup = canvas.getByRole('listbox')
-    await expect(getComputedStyle(popup).position).toBe('absolute')
+    const popup = await page.findByRole('listbox')
+    // Rendered in a portal, outside the form: it can't push the layout or be clipped by the card.
+    await expect(form.contains(popup)).toBe(false)
     const popupBounds = popup.getBoundingClientRect()
     const triggerBounds = trigger.getBoundingClientRect()
     await expect(Math.abs(popupBounds.right - triggerBounds.right)).toBeLessThan(0.1)
     await expect(Math.abs(popupBounds.top - triggerBounds.bottom - 8)).toBeLessThan(0.1)
     await expect(form.getBoundingClientRect().height).toBe(formBefore.height)
     await expect(amount.getBoundingClientRect().top).toBe(amountBefore.top)
-    await userEvent.click(canvas.getByRole('option', { name: 'Arbitrum' }))
+    await userEvent.click(await page.findByRole('option', { name: 'Arbitrum' }))
     await expect(trigger).toHaveTextContent('Arbitrum')
-    await expect(trigger).toHaveFocus()
+    await waitFor(() => expect(trigger).toHaveFocus())
     await expect(form.getBoundingClientRect().height).toBe(formBefore.height)
     await userEvent.type(amount, '250.00')
     await expect(canvas.getByRole('button', { name: 'Deposit' })).toBeEnabled()

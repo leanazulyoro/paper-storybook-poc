@@ -49,7 +49,10 @@ const meta: Meta<typeof Tokens> = {
 }
 export default meta
 
-export const ColorsAndType: StoryObj<typeof Tokens> = {}
+export const ColorsAndType: StoryObj<typeof Tokens> = {
+  tags: ['paper'],
+  parameters: { paper: 'Tokens › Colors & Type' },
+}
 
 // Mirrors the "Typography" board in Paper (Tokens page). Class names are literal so Tailwind
 // generates them; the Record type fails typecheck if Paper adds a style this map lacks.
@@ -67,6 +70,8 @@ const typography: Record<(typeof textStyles)[number], { className: string; spec:
 }
 
 export const Typography: StoryObj<typeof Tokens> = {
+  tags: ['paper'],
+  parameters: { paper: 'Tokens › Typography' },
   render: () => (
     <div className="flex flex-col gap-5 p-8 font-sans text-foreground">
       {textStyles.map((name) => (
@@ -78,10 +83,7 @@ export const Typography: StoryObj<typeof Tokens> = {
       <div className="flex items-baseline gap-6">
         <span className="w-32 shrink-0 text-small text-muted-foreground">link · inherits size</span>
         <span className="text-body">
-          By depositing you accept the{' '}
-          <TextLink>
-            <a href="#terms">vault terms</a>
-          </TextLink>
+          By depositing you accept the <TextLink render={<a href="#terms" />}>vault terms</TextLink>
         </span>
       </div>
     </div>

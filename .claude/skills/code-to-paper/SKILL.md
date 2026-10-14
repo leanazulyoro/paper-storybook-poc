@@ -41,5 +41,19 @@ this checkpoint; honor any explicit user review requirement on the current edits
    `paper-to-code` step 0): overwrite with the new `get_jsx` output, so the next sync's diff shows
    only the designer's changes, not yours. Commit them with a non-sync message (`chore(paper): …`).
 
+## New component (not just a fix)
+
+Bringing a whole component into Paper (e.g. one built in code, or from another Paper copy) works
+the same way, with three additions:
+
+- **Blueprint:** build the board from the component's styles file, or from an existing snapshot of
+  it (`paper-snapshots/…`), one frame per variant/state, named after the styles keys and their
+  `// Frame/Name` comments (`DropdownMenu/Trigger/Hover`, `DropdownMenu/Content/End`).
+- **Copies:** in Blocks and Pages, reuse the new frames with `<x-paper-clone node-id="…" />` instead
+  of redrawing them, so every copy starts identical.
+- **Check:** the round trip (step 6) must map the new board to the code's current classes with no
+  diff; add its snapshot to the `paper-to-code` step 0 table, and a `paper`-tagged story if the code
+  has none.
+
 Focus rings are code-owned: never push focus classes; at most update `--color-focus` or the
 reference `…/Focus` frames.
