@@ -1,5 +1,4 @@
 export { cn } from './cn'
-export { Slot } from './Slot'
 export { Badge, type BadgeProps } from './components/Badge'
 export { DropdownMenu, type DropdownMenuProps, type DropdownMenuOption } from './components/DropdownMenu'
 export { Button, type ButtonProps } from './components/Button'

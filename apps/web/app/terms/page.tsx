@@ -10,8 +10,8 @@ const Terms = () => (
       <CardHeader title={m.title} />
       <CardBody>{m.body}</CardBody>
       <CardFooter>
-        <Button asChild variant="secondary">
-          <Link href="/">{m.back}</Link>
+        <Button variant="secondary" render={<Link href="/" />}>
+          {m.back}
         </Button>
       </CardFooter>
     </Card>

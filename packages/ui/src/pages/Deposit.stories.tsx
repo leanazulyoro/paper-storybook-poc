@@ -40,10 +40,7 @@ const DepositPage = ({ value: initialValue, error, deposit, submitting }: Args) 
           onValueChange={setValue}
           terms={
             <>
-              By depositing you accept the{' '}
-              <TextLink>
-                <a href="#terms">vault terms</a>
-              </TextLink>
+              By depositing you accept the <TextLink render={<a href="#terms" />}>vault terms</TextLink>
             </>
           }
           submitLabel={submitting ? 'Depositing…' : 'Deposit'}

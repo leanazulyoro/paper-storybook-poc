@@ -33,10 +33,11 @@ const policy = [
     selector: `:matches(JSXAttribute[name.name="className"], CallExpression[callee.name="cn"]) Literal[value=${FOCUS}]`,
     message: 'Use focusRing (src/focusRing.ts): one ring for every component, look set by Paper tokens.',
   },
-  // Links: ui never renders <a>; the app passes its own link via a slot or asChild.
+  // Links: ui never renders <a>; the app passes its own link via a slot or a `render` prop.
   {
     selector: 'JSXOpeningElement[name.name="a"]',
-    message: 'No <a> in ui: accept a link via a ReactNode slot, <TextLink>, or <Button asChild>.',
+    message:
+      'No <a> in ui: accept a link via a ReactNode slot or a `render` prop (<TextLink render>, <Button render>).',
   },
 ]
 

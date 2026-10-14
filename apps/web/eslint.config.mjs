@@ -30,11 +30,11 @@ const uiOnly = [
     selector: 'JSXExpressionContainer > Literal[value=/\\S/]',
     message: 'No hardcoded text: add it to messages/ and read it from there.',
   },
-  // Links: next/link must be styled by a ui component.
+  // Links: next/link must be styled by a ui component, passed as its `render` prop.
   {
     selector:
-      'JSXElement:not([openingElement.name.name=/^(TextLink|Button)$/]) > JSXElement[openingElement.name.name="Link"]',
-    message: 'Wrap <Link> in <TextLink> or <Button asChild> so it gets design-system styling.',
+      'JSXElement[openingElement.name.name="Link"]:not(JSXOpeningElement[name.name=/^(TextLink|Button)$/] > JSXAttribute[name.name="render"] > JSXExpressionContainer > JSXElement)',
+    message: 'Pass <Link> as the render prop of <TextLink> or <Button> so it gets design-system styling.',
   },
 ]
 

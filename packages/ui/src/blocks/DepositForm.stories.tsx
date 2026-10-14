@@ -24,10 +24,7 @@ const meta: Meta<typeof DepositForm> = {
     value: '',
     terms: (
       <>
-        By depositing you accept the{' '}
-        <TextLink>
-          <a href="#terms">vault terms</a>
-        </TextLink>
+        By depositing you accept the <TextLink render={<a href="#terms" />}>vault terms</TextLink>
       </>
     ),
     submitLabel: 'Deposit',
@@ -56,10 +53,8 @@ export const LongText: Story = {
     terms: (
       <>
         Mit der Einzahlung akzeptieren Sie die{' '}
-        <TextLink>
-          <a href="#terms">Nutzungsbedingungen des Tresors</a>
-        </TextLink>{' '}
-        sowie die Risikohinweise.
+        <TextLink render={<a href="#terms" />}>Nutzungsbedingungen des Tresors</TextLink> sowie die
+        Risikohinweise.
       </>
     ),
     submitLabel: 'Jetzt einzahlen',

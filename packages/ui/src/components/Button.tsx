@@ -1,37 +1,39 @@
 // Behaviour + semantics only; visuals come from Button.styles.ts (synced from Paper).
-// Code-only: <button> semantics, focus ring, disabled cursor, asChild.
-import type { ButtonHTMLAttributes } from 'react'
+// Code-only: <button> semantics, focus ring, disabled cursor, composition via `render`
+// (Base UI's model, as in the webapp): <Button render={<Link href="/" />}>Label</Button>.
+// useRender, not Base UI's Button: rendering a link must not add role="button".
+import { useRender } from '@base-ui/react/use-render'
 import { cn } from '../cn'
 import { focusRing } from '../focusRing'
-import { Slot } from '../Slot'
 import { buttonStyles as s } from './Button.styles'
 
-export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+export type ButtonProps = useRender.ComponentProps<'button'> & {
   variant?: keyof typeof s.variant
-  /** Style the child element (e.g. a framework Link) as a button instead of rendering <button>. */
-  asChild?: boolean
 }
 
 export const Button = ({
   variant = 'primary',
-  asChild,
+  render,
   className,
   type = 'button',
+  ref,
   ...props
-}: ButtonProps) => {
-  const Comp = asChild ? Slot : 'button'
-  return (
-    <Comp
-      {...(asChild ? {} : { type })}
-      className={cn(
+}: ButtonProps) =>
+  useRender({
+    render,
+    ref,
+    defaultTagName: 'button',
+    props: {
+      // A rendered element (e.g. a link) keeps its own semantics: no button type on it.
+      ...(render ? {} : { type }),
+      className: cn(
         s.base,
         s.variant[variant],
         s.disabled,
         focusRing,
         'disabled:cursor-not-allowed',
         className,
-      )}
-      {...props}
-    />
-  )
-}
+      ),
+      ...props,
+    },
+  })

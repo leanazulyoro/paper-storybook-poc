@@ -78,10 +78,7 @@ export const Typography: StoryObj<typeof Tokens> = {
       <div className="flex items-baseline gap-6">
         <span className="w-32 shrink-0 text-small text-muted-foreground">link · inherits size</span>
         <span className="text-body">
-          By depositing you accept the{' '}
-          <TextLink>
-            <a href="#terms">vault terms</a>
-          </TextLink>
+          By depositing you accept the <TextLink render={<a href="#terms" />}>vault terms</TextLink>
         </span>
       </div>
     </div>

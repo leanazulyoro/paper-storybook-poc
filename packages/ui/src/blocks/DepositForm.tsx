@@ -17,7 +17,7 @@ export type DepositFormProps = {
   error?: string
   value: string
   onValueChange: (value: string) => void
-  /** Rich text slot; the app passes translated text with its own link (e.g. next/link inside <TextLink>). */
+  /** Rich text slot; the app passes translated text with its own link (e.g. <TextLink render={<Link …/>}>). */
   terms?: ReactNode
   submitLabel: ReactNode
   submitting?: boolean
