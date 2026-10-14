@@ -90,26 +90,31 @@ export const KeyboardSelection: Story = {
     const canvas = within(canvasElement)
     const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
     const trigger = canvas.getByRole('combobox')
-    trigger.focus()
-    await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}{ArrowDown}')
+    // The popup mounts asynchronously: open, wait for it, then navigate (keys sent earlier race
+    // the mount, which made this flaky on slower CI machines).
+    const open = async (key: string) => {
+      await waitFor(() => expect(trigger).toHaveFocus())
+      await userEvent.keyboard(key)
+      await page.findByRole('listbox')
+    }
     // Base UI moves focus to the highlighted option (not aria-activedescendant on the trigger).
-    await expect(await page.findByRole('option', { name: 'Base' })).toHaveAttribute('data-highlighted')
+    const highlighted = (name: string) =>
+      waitFor(() => expect(page.getByRole('option', { name })).toHaveAttribute('data-highlighted'))
+    trigger.focus()
+    await open('{ArrowDown}')
+    await highlighted('Ethereum') // opens on the selected option
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}')
+    await highlighted('Base')
     await expect(trigger).toHaveTextContent('Ethereum')
     await expect(args.onValueChange).not.toHaveBeenCalled()
     await userEvent.keyboard('{Escape}')
     await waitFor(() => expect(trigger).toHaveFocus())
     await waitFor(() => expect(trigger).toHaveAttribute('aria-expanded', 'false'))
     await expect(args.onValueChange).not.toHaveBeenCalled()
-    // The popup mounts asynchronously: open, wait for it, then navigate.
-    const open = async (key: string) => {
-      await waitFor(() => expect(trigger).toHaveFocus())
-      await userEvent.keyboard(key)
-      await page.findByRole('listbox')
-    }
     await open('{Enter}')
     // Base UI keeps disabled options reachable by keyboard but not selectable: End lands on Polygon.
     await userEvent.keyboard('{End}')
-    await expect(await page.findByRole('option', { name: 'Polygon' })).toHaveAttribute('data-highlighted')
+    await highlighted('Polygon')
     await userEvent.keyboard('{Enter}')
     await expect(args.onValueChange).not.toHaveBeenCalled()
     await userEvent.keyboard('{ArrowUp}{Enter}')
