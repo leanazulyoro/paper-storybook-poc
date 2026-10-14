@@ -168,12 +168,7 @@ export const DropdownMenu = ({
         <Icon name={isOpen ? 'chevron-up' : 'chevron-down'} className={s.chevron} />
       </button>
       {isOpen && (
-        <div
-          id={listId}
-          role="listbox"
-          aria-label={label}
-          className={cn(s.content, isEndAligned && s.end)}
-        >
+        <div id={listId} role="listbox" aria-label={label} className={cn(s.content, isEndAligned && s.end)}>
           {options.map((option) => (
             <div
               key={option.value}

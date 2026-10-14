@@ -1,13 +1,6 @@
 // Registry: kebab-case name (Paper frame name) → component. Two kinds, one public namespace:
 // the kind only decides authoring rules (lint per folder) and catalog grouping, never usage.
-import {
-  IconArrowRight,
-  IconCheck,
-  IconCopy,
-  IconPocMark,
-  IconChevronDown,
-  IconChevronUp,
-} from '.'
+import { IconArrowRight, IconCheck, IconCopy, IconPocMark, IconChevronDown, IconChevronUp } from '.'
 
 export const monoIcons = {
   'arrow-right': IconArrowRight,
