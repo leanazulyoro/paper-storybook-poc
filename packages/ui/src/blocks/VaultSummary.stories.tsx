@@ -1,17 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Badge } from '../components/Badge'
 import { VaultSummary } from './VaultSummary'
+import { paperBoard } from '../stories/paperBoard'
 
 const meta: Meta<typeof VaultSummary> = {
   title: 'Blocks/VaultSummary',
   component: VaultSummary,
-  decorators: [
-    (Story) => (
-      <div className="bg-muted p-8">
-        <Story />
-      </div>
-    ),
-  ],
+  parameters: { paper: paperBoard({ board: 'Blocks › VaultSummary', surface: 'muted', layout: 'row' }) },
   args: {
     title: 'USDC Vault',
     status: <Badge tone="success">Active</Badge>,
@@ -26,18 +21,18 @@ const meta: Meta<typeof VaultSummary> = {
 export default meta
 type Story = StoryObj<typeof VaultSummary>
 
-export const Default: Story = { tags: ['paper'], parameters: { paper: 'Blocks › VaultSummary/Default' } }
+export const Default: Story = { tags: ['paper'], parameters: { paper: { frame: 'VaultSummary/Default' } } }
 
 export const Paused: Story = {
   tags: ['paper'],
-  parameters: { paper: 'Blocks › VaultSummary/Paused' },
+  parameters: { paper: { frame: 'VaultSummary/Paused' } },
   args: { status: <Badge tone="neutral">Paused</Badge> },
 }
 
 // i18n stress test: long German strings.
 export const LongText: Story = {
   tags: ['paper'],
-  parameters: { paper: 'Blocks › VaultSummary/LongText' },
+  parameters: { paper: { frame: 'VaultSummary/LongText' } },
   args: {
     title: 'USDC-Tresor mit variabler Rendite',
     status: <Badge tone="warning">Geringe Liquidität</Badge>,

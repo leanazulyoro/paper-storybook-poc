@@ -5,10 +5,19 @@ import { NetworkDropdown, networks } from '../stories/NetworkDropdown'
 import { pseudo } from '../stories/StatesBoard'
 import { Button } from './Button'
 import { DropdownMenu } from './DropdownMenu'
+import { paperBoard } from '../stories/paperBoard'
 
 const meta: Meta<typeof DropdownMenu> = {
   title: 'Components/DropdownMenu',
   component: DropdownMenu,
+  parameters: {
+    paper: paperBoard({
+      board: 'Components › DropdownMenu',
+      width: 824,
+      layout: 'row',
+      caption: 'Ethereum selected · Arbitrum hover · Polygon disabled\nSample networks for design review',
+    }),
+  },
   args: { label: 'Network', value: 'ethereum', options: networks, onValueChange: fn(), onOpenChange: fn() },
   decorators: [
     (Story) => (
@@ -53,7 +62,6 @@ export const End: Story = {
 // The reviewed open view: Ethereum selected, Arbitrum hovered, Polygon disabled.
 export const Open: Story = {
   tags: ['paper'],
-  parameters: { paper: 'Components › DropdownMenu › Open · align start' },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
@@ -185,12 +193,11 @@ export const DisabledTrigger: Story = {
 export const States: Story = {
   tags: ['paper'],
   parameters: {
-    paper: 'Components › DropdownMenu (trigger states)',
     pseudo: { ...pseudo, hover: ['[data-state="hover"] [role="combobox"]'] },
   },
   decorators: [
     (Story) => (
-      <div className="h-80 w-[824px] p-8">
+      <div className="h-80 w-max">
         <Story />
       </div>
     ),

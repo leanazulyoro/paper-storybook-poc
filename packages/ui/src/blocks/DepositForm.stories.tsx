@@ -4,17 +4,12 @@ import { expect, userEvent, within, waitFor } from 'storybook/test'
 import { NetworkDropdown } from '../stories/NetworkDropdown'
 import { TextLink } from '../components/TextLink'
 import { DepositForm, type DepositFormProps } from './DepositForm'
+import { paperBoard } from '../stories/paperBoard'
 
 const meta: Meta<typeof DepositForm> = {
   title: 'Blocks/DepositForm',
   component: DepositForm,
-  decorators: [
-    (Story) => (
-      <div className="bg-muted p-8">
-        <Story />
-      </div>
-    ),
-  ],
+  parameters: { paper: paperBoard({ board: 'Blocks › DepositForm', surface: 'muted', layout: 'row' }) },
   args: {
     title: 'Deposit USDC',
     network: <NetworkDropdown align="end" />,
@@ -38,11 +33,11 @@ const meta: Meta<typeof DepositForm> = {
 export default meta
 type Story = StoryObj<typeof DepositForm>
 
-export const Default: Story = { tags: ['paper'], parameters: { paper: 'Blocks › DepositForm/Default' } }
+export const Default: Story = { tags: ['paper'], parameters: { paper: { frame: 'DepositForm/Default' } } }
 export const WithValue: Story = { args: { value: '250.00' } }
 export const Error: Story = {
   tags: ['paper'],
-  parameters: { paper: 'Blocks › DepositForm/Error' },
+  parameters: { paper: { frame: 'DepositForm/Error' } },
   args: { value: '2,000.00', error: 'Exceeds balance' },
 }
 export const Submitting: Story = { args: { value: '250.00', submitting: true, submitLabel: 'Depositing…' } }
@@ -50,7 +45,7 @@ export const Submitting: Story = { args: { value: '250.00', submitting: true, su
 // i18n stress test: long German strings, link mid-sentence.
 export const LongText: Story = {
   tags: ['paper'],
-  parameters: { paper: 'Blocks › DepositForm/LongText' },
+  parameters: { paper: { frame: 'DepositForm/LongText' } },
   args: {
     title: 'USDC einzahlen',
     network: <NetworkDropdown label="Netzwerk" align="end" />,
@@ -69,7 +64,7 @@ export const LongText: Story = {
 
 export const NetworkOpen: Story = {
   tags: ['paper'],
-  parameters: { paper: 'Blocks › DepositForm/NetworkOpen' },
+  parameters: { paper: { frame: 'DepositForm/NetworkOpen' } },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
