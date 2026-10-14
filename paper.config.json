@@ -2,7 +2,7 @@
   "appName": "Paper POC",
   "source": "jazzyNest",
   "files": {
-    "designSystem": { "name": "{appName} - Design system", "id": "01M4Y2EXAFC0D4C542D3HZDX2D" },
+    "designSystem": { "name": "{appName} - Design system", "id": "01M4Y4PEZ3QXVXF1A2N7EKA2QS" },
     "jazzyNest": { "name": "Jazzy nest", "id": "01M4DYBJFTV1WSY00VDCFZBF66" }
   }
 }
