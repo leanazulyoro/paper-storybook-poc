@@ -90,21 +90,29 @@ export const KeyboardSelection: Story = {
     const canvas = within(canvasElement)
     const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
     const trigger = canvas.getByRole('combobox')
-    // The popup mounts asynchronously: open, wait for it, then navigate (keys sent earlier race
-    // the mount, which made this flaky on slower CI machines).
+    // Base UI moves focus to the highlighted option (not aria-activedescendant on the trigger).
+    const current = () =>
+      page.queryAllByRole('option').find((o) => o.hasAttribute('data-highlighted'))?.textContent
+    // Base UI ignores list keys until the popup has finished opening (slower under load, e.g. CI),
+    // so press until the key takes effect: wait for the result, not for a fixed time.
+    const step = (key: string, expected: string) =>
+      waitFor(
+        async () => {
+          if (current() !== expected) await userEvent.keyboard(key)
+          if (current() !== expected) throw new Error(`expected ${expected} highlighted, got ${current()}`)
+        },
+        { timeout: 3000, interval: 100 },
+      )
     const open = async (key: string) => {
       await waitFor(() => expect(trigger).toHaveFocus())
       await userEvent.keyboard(key)
       await page.findByRole('listbox')
     }
-    // Base UI moves focus to the highlighted option (not aria-activedescendant on the trigger).
-    const highlighted = (name: string) =>
-      waitFor(() => expect(page.getByRole('option', { name })).toHaveAttribute('data-highlighted'))
     trigger.focus()
     await open('{ArrowDown}')
-    await highlighted('Ethereum') // opens on the selected option
-    await userEvent.keyboard('{ArrowDown}{ArrowDown}')
-    await highlighted('Base')
+    await waitFor(() => expect(current()).toBe('Ethereum')) // opens on the selected option
+    await step('{ArrowDown}', 'Arbitrum')
+    await step('{ArrowDown}', 'Base')
     await expect(trigger).toHaveTextContent('Ethereum')
     await expect(args.onValueChange).not.toHaveBeenCalled()
     await userEvent.keyboard('{Escape}')
@@ -112,20 +120,22 @@ export const KeyboardSelection: Story = {
     await waitFor(() => expect(trigger).toHaveAttribute('aria-expanded', 'false'))
     await expect(args.onValueChange).not.toHaveBeenCalled()
     await open('{Enter}')
-    // Base UI keeps disabled options reachable by keyboard but not selectable: End lands on Polygon.
-    await userEvent.keyboard('{End}')
-    await highlighted('Polygon')
+    // Disabled options stay reachable by keyboard but not selectable: End lands on Polygon.
+    await step('{End}', 'Polygon')
     await userEvent.keyboard('{Enter}')
     await expect(args.onValueChange).not.toHaveBeenCalled()
-    await userEvent.keyboard('{ArrowUp}{Enter}')
+    await step('{ArrowUp}', 'Base')
+    await userEvent.keyboard('{Enter}')
     await waitFor(() => expect(args.onValueChange).toHaveBeenCalledWith('base'))
     await expect(trigger).toHaveTextContent('Base')
     await waitFor(() => expect(trigger).toHaveAttribute('aria-expanded', 'false'))
     await open('{Enter}')
-    await userEvent.keyboard('{Home} ')
+    await step('{Home}', 'Ethereum')
+    await userEvent.keyboard(' ')
     await waitFor(() => expect(trigger).toHaveTextContent('Ethereum'))
     await open('{Enter}')
-    await userEvent.keyboard('b{Enter}') // typeahead
+    await step('b', 'Base') // typeahead
+    await userEvent.keyboard('{Enter}')
     await waitFor(() => expect(trigger).toHaveTextContent('Base'))
   },
 }
