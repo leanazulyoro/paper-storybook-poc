@@ -1,4 +1,4 @@
-// Mirrors Paper "Jazzy nest" › Screens › Deposit, composed only from ui blocks.
+// Mirrors Paper "Jazzy nest" › Pages › Deposit, composed only from ui blocks.
 // The shipped page lives in apps/web (wired to real state + messages); this is its design mirror
 // with sample data, so Storybook and Paper can be compared screen to screen.
 import type { Meta, StoryObj } from '@storybook/react-vite'

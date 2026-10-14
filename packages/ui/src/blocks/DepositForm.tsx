@@ -1,4 +1,4 @@
-// Source: Paper "Jazzy nest" › Screens › Deposit › DepositForm.
+// Source: Paper "Jazzy nest" › Pages › Deposit › DepositForm.
 // Presentational + controlled: the app owns value, validation and submission.
 import type { FormEvent, ReactNode } from 'react'
 import { Button } from '../components/Button'

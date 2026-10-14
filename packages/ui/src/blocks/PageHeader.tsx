@@ -1,4 +1,4 @@
-// Source: Paper "Jazzy nest" › Screens › Deposit › "Page header".
+// Source: Paper "Jazzy nest" › Pages › Deposit › "Page header".
 import type { ReactNode } from 'react'
 import { pageHeaderStyles as s } from './PageHeader.styles'
 

@@ -1,4 +1,4 @@
-// Source: Paper "Jazzy nest" › Screens › Deposit (artboard: muted ground, 64px vertical padding, 824px column).
+// Source: Paper "Jazzy nest" › Pages › Deposit (artboard: muted ground, 64px vertical padding, 824px column).
 import type { ReactNode } from 'react'
 import { pageStyles as s } from './Page.styles'
 
