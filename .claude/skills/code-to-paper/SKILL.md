@@ -13,7 +13,9 @@ is a separate node and must be updated.
 
 ## Before starting
 
-Paper desktop open on the POC file ("Jazzy nest", or your copy of it); `get_guide("paper-mcp-instructions")` once.
+Paper desktop open. Run `node scripts/paper-config.mjs`: it prints the app's Paper files and
+`source`, the file to push to (unless the user names another entry). `open_file` it by its `id`,
+never by name. Then `get_guide("paper-mcp-instructions")` once.
 
 If this push also creates a new visual design, follow
 [paper-design-review](../paper-design-review/SKILL.md) before subsequent local implementation,
@@ -54,6 +56,20 @@ the same way, with three additions:
 - **Check:** the round trip (step 6) must map the new board to the code's current classes with no
   diff; add its snapshot to the `paper-to-code` step 0 table, and a `paper`-tagged story if the code
   has none.
+
+## New design file (built from code)
+
+When the target entry in `paper.config.json` has `"id": null`, the file doesn't exist yet:
+
+1. `create_file` with the entry's resolved name (from `node scripts/paper-config.mjs`, e.g.
+   "Paper POC - Design system"), then **immediately** write the returned id into that entry and
+   commit it alone (`chore(paper): create <name>`), before drawing anything. Never create a file
+   when the entry has an id: open it instead, so reruns never produce duplicates.
+2. `open_file` it and build in order, checking each layer before the next: tokens
+   (`create_tokens` from `theme.css`) → Icons → Components (per "New component" above) → Blocks →
+   Pages, with the page names and boards listed in `paper-to-code` step 0.
+3. Switch `source` to the new entry only after its round trip passes: `paper-to-code` against it
+   produces no code diff.
 
 Focus rings are code-owned: never push focus classes; at most update `--color-focus` or the
 reference `…/Focus` frames.

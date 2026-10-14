@@ -6,6 +6,8 @@ See `README.md` (phases, success bar) and `FINDINGS.md` (every decision and why)
 ## Layout
 
 - `packages/ui`: components, blocks, icons, tokens, Storybook (:6006). `apps/web`: Next app (:3100).
+- `paper.config.json`: the app's Paper files and `source` (the one syncs read); skills open files by
+  `id` (`node scripts/paper-config.mjs` prints it resolved). Never hardcode a Paper file name.
 - Node 22 (`.nvmrc`), pnpm. `pnpm lint`, `pnpm typecheck`, `pnpm test` (stories + play tests,
   headless Chromium), `pnpm storybook`, `pnpm dev`.
 

@@ -18,7 +18,9 @@ and report it: that's a code change for a human-reviewed commit, not a sync.
 
 ## Before starting
 
-- Paper desktop open on the POC file ("Jazzy nest", or your copy of it); call `get_guide("paper-mcp-instructions")` once.
+- Paper desktop open. Run `node scripts/paper-config.mjs`: it prints the app's Paper files and
+  `source`, the file to read. `open_file` that file by its `id` (never by name: names repeat and
+  change). Then `get_guide("paper-mcp-instructions")` once.
 - Clean working tree. Read `FINDINGS.md` if a rule below is unclear: it explains why.
 - For new visual designs created through MCP, follow
   [paper-design-review](../paper-design-review/SKILL.md) and verify the user's approval of the
