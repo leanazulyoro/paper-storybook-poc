@@ -1,8 +1,9 @@
 import tseslint from 'typescript-eslint'
 
 // Classes the .tsx may own: behaviour/a11y, never Paper visuals. Focus ring comes only from
-// src/focusRing.ts, so no literal focus-visible: here.
-const CODE_OWNED = '/^((disabled:cursor-|cursor-|sr-only)\\S*\\s*)+$/'
+// src/focusRing.ts, so no literal focus-visible: here. Motion (transition-*) is code-owned: Paper
+// can't express it.
+const CODE_OWNED = '/^((data-disabled:cursor-|disabled:cursor-|cursor-|transition-|sr-only)\\S*\\s*)+$/'
 const FOCUS = '/focus(-visible|-within)?:/'
 
 // ui policy (stories and story-only helpers in src/stories exempt: they supply sample copy and

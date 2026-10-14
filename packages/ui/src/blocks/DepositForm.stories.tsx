@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
-import { expect, userEvent, within } from 'storybook/test'
+import { expect, userEvent, within, waitFor } from 'storybook/test'
 import { NetworkDropdown } from '../stories/NetworkDropdown'
 import { TextLink } from '../components/TextLink'
 import { DepositForm, type DepositFormProps } from './DepositForm'
@@ -64,31 +64,34 @@ export const LongText: Story = {
 export const NetworkOpen: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
+    const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
     await userEvent.click(canvas.getByRole('combobox'))
-    await userEvent.hover(canvas.getByRole('option', { name: 'Arbitrum' }))
+    await userEvent.hover(await page.findByRole('option', { name: 'Arbitrum' }))
   },
 }
 
 export const NetworkSelection: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
+    const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
     const trigger = canvas.getByRole('combobox')
     const amount = canvas.getByRole('textbox', { name: 'Amount' })
     const form = amount.closest('section')!
     const formBefore = form.getBoundingClientRect()
     const amountBefore = amount.getBoundingClientRect()
     await userEvent.click(trigger)
-    const popup = canvas.getByRole('listbox')
-    await expect(getComputedStyle(popup).position).toBe('absolute')
+    const popup = await page.findByRole('listbox')
+    // Rendered in a portal, outside the form: it can't push the layout or be clipped by the card.
+    await expect(form.contains(popup)).toBe(false)
     const popupBounds = popup.getBoundingClientRect()
     const triggerBounds = trigger.getBoundingClientRect()
     await expect(Math.abs(popupBounds.right - triggerBounds.right)).toBeLessThan(0.1)
     await expect(Math.abs(popupBounds.top - triggerBounds.bottom - 8)).toBeLessThan(0.1)
     await expect(form.getBoundingClientRect().height).toBe(formBefore.height)
     await expect(amount.getBoundingClientRect().top).toBe(amountBefore.top)
-    await userEvent.click(canvas.getByRole('option', { name: 'Arbitrum' }))
+    await userEvent.click(await page.findByRole('option', { name: 'Arbitrum' }))
     await expect(trigger).toHaveTextContent('Arbitrum')
-    await expect(trigger).toHaveFocus()
+    await waitFor(() => expect(trigger).toHaveFocus())
     await expect(form.getBoundingClientRect().height).toBe(formBefore.height)
     await userEvent.type(amount, '250.00')
     await expect(canvas.getByRole('button', { name: 'Deposit' })).toBeEnabled()
