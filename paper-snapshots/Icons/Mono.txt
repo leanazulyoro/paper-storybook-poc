@@ -29,7 +29,7 @@
           </div>
         </div>
         <div className="flex flex-col items-center w-[128px] shrink-0 p-3 rounded-md gap-2 border border-solid border-border">
-          <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block', height: '24px', width: '24px' }}>
+          <svg width="24" height="24" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', flexShrink: '0' }}>
             <path d="M4 6L8 10L12 6" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <div className="font-[system-ui,sans-serif] text-muted-foreground text-xs/tight">
@@ -37,7 +37,7 @@
           </div>
         </div>
         <div className="flex flex-col items-center w-[128px] shrink-0 p-3 rounded-md gap-2 border border-solid border-border">
-          <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block', height: '24px', width: '24px' }}>
+          <svg width="24" height="24" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', flexShrink: '0' }}>
             <path d="M4 10L8 6L12 10" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <div className="font-[system-ui,sans-serif] text-muted-foreground text-xs/tight">
