@@ -1,13 +1,7 @@
 // SYNCED FROM PAPER: only visual classes, keyed by Paper layer/variant names.
 // A Paper sync may rewrite this file; behaviour lives in the .tsx and is never touched.
-// Source: Paper "Jazzy nest" › Components › CopyButton.
+// Source: Paper "Jazzy nest" › Components › CopyButton (CopyButton/Idle; CopyButton/Copied → data-copied:).
 export const copyButtonStyles = {
-  base: 'inline-flex h-8 items-center gap-2 rounded-md border px-3 text-label',
-  state: {
-    idle: { root: 'border-muted bg-muted text-foreground', icon: 'shrink-0 text-muted-foreground' }, // CopyButton/Idle
-    copied: {
-      root: 'border-success bg-success text-primary-foreground',
-      icon: 'shrink-0 text-primary-foreground',
-    }, // CopyButton/Copied
-  },
+  base: 'group inline-flex h-8 items-center gap-2 rounded-md border border-muted bg-muted px-3 text-label text-foreground data-copied:border-success data-copied:bg-success data-copied:text-primary-foreground',
+  icon: 'shrink-0 text-muted-foreground group-data-copied:text-primary-foreground',
 }
