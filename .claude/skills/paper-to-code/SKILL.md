@@ -102,9 +102,30 @@ keys in `<Component>.styles.ts` (the `// Frame/Name` comments say which frame fe
 
 Mapping rules:
 
-- Base frame = default variant. A **state frame** (`…/Hover`, `…/Active`) contributes only its
-  difference from its base frame, emitted as `not-disabled:hover:*` / `not-disabled:active:*`
-  (a disabled control never reacts).
+- Base frame = default variant. A **state frame** contributes only its difference from its base
+  frame, emitted with the variant for that state. Which variant depends on what renders it:
+
+  | Paper frame        | Native element (Button, Input) | Base UI part (DropdownMenu, …)                                                                                                 |
+  | ------------------ | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+  | `…/Hover`          | `not-disabled:hover:`          | `not-data-disabled:hover:` (trigger); `not-data-selected:data-highlighted:` (item: hover and keyboard highlight are one state) |
+  | `…/Active`         | `not-disabled:active:`         | `not-data-disabled:active:`                                                                                                    |
+  | `…/Disabled`       | `disabled:`                    | `data-disabled:`                                                                                                               |
+  | `…/Selected`       | n/a                            | `data-selected:`                                                                                                               |
+  | `…/Open` (trigger) | n/a                            | `data-popup-open:`                                                                                                             |
+
+  A disabled control never reacts (hence the `not-…disabled` guards). Never emit conditional
+  classes for states: the `.tsx` doesn't pick classes by state, Base UI's attributes do.
+
+- **Child state:** if a state frame's difference is on a _child_ layer (e.g. `Trigger/Open` rotates
+  the chevron), put `group` on the component root key and the variant on the child key:
+  `group-data-popup-open:rotate-180` (`group-hover:` for native elements).
+- **Popup positioning is drawn, not styled.** A `…/Anchor` frame and an absolutely positioned
+  `…/Content` only show where the popup sits; code positions it (Base UI `Positioner`). Map
+  `left-0`/`right-0` to the `align` prop (`…/Content/End` = `align="end"`, not a class) and the
+  distance from the trigger to `data-[side=bottom]:mt-*` (plus the mirrored `data-[side=top]:mb-*`)
+  on the popup. Never emit `absolute`, `top-*`, `left-*` or `right-*` for a popup.
+- Paper exports rotation as an inline CSS property (`rotate: '180deg'`): map it to `rotate-180`
+  (Tailwind v4 sets the same property).
 - **`…/Focus` frames are reference only: skip them.** The focus ring is code-owned (`focusRing.ts`);
   Paper owns only `--color-focus`. Lint rejects focus classes in `*.styles.ts`.
 - Text layer of a single-label component (Button, Badge): its text classes go on the root
@@ -153,8 +174,14 @@ pnpm lint && pnpm typecheck && pnpm test
 ```
 
 `pnpm test` runs every story in headless Chromium, including play tests (e.g. CopyButton's
-copy → copied → reset): a sync must never break them. Then compare Storybook's `States` stories
-with the Paper boards (screenshots) for a visual check.
+copy → copied → reset): a sync must never break them. Then compare the **`paper`-tagged** stories
+with the Paper frames named in their `parameters.paper` (screenshots), and only those: untagged
+stories are code-only (behaviour tests, stress cases) and have no Paper counterpart. In Storybook,
+the sidebar's tag filter → `paper` shows just these.
+
+- A new or renamed source frame needs a `paper`-tagged story (`tags: ['paper']`,
+  `parameters: { paper: 'Page › Board › Frame' }`): a story change is code, so report it for a
+  separate non-sync commit.
 
 - Storybook from a worktree: port 6006 belongs to the main checkout, so run
   `pnpm --filter @poc/ui exec storybook dev -p 6011 --no-open` and stop it when done.
