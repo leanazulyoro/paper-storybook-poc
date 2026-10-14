@@ -1,6 +1,8 @@
 // Behaviour + semantics only; visuals come from Input.styles.ts (synced from Paper).
-// Code-only: <label>/<input> semantics, aria wiring, focus ring.
-import { useId, type InputHTMLAttributes } from 'react'
+// Base UI Field wires label, description/error and aria-invalid; the error state is styled
+// through `data-invalid`, so this file never picks classes by state.
+import { Field } from '@base-ui/react/field'
+import type { InputHTMLAttributes } from 'react'
 import { cn } from '../cn'
 import { focusRing } from '../focusRing'
 import { inputStyles as s } from './Input.styles'
@@ -12,30 +14,16 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   error?: string
 }
 
-export const Input = ({ label, hint, error, id, className, ...props }: InputProps) => {
-  const autoId = useId()
-  const inputId = id ?? autoId
-  const messageId = `${inputId}-message`
-  const message = error ?? hint
-  const state = s.state[error ? 'error' : 'default']
-
-  return (
-    <div className={cn(s.root, className)}>
-      <label htmlFor={inputId} className={s.label}>
-        {label}
-      </label>
-      <input
-        id={inputId}
-        aria-invalid={error ? true : undefined}
-        aria-describedby={message ? messageId : undefined}
-        className={cn(s.field, s.placeholder, state.field, focusRing)}
-        {...props}
-      />
-      {message && (
-        <span id={messageId} className={cn(s.message, state.message)}>
-          {message}
-        </span>
-      )}
-    </div>
-  )
-}
+export const Input = ({ label, hint, error, className, ...props }: InputProps) => (
+  <Field.Root invalid={!!error} className={cn(s.root, className)}>
+    <Field.Label className={s.label}>{label}</Field.Label>
+    <Field.Control className={cn(s.field, s.placeholder, focusRing)} {...props} />
+    {error ? (
+      <Field.Error match className={s.message}>
+        {error}
+      </Field.Error>
+    ) : (
+      hint && <Field.Description className={s.message}>{hint}</Field.Description>
+    )}
+  </Field.Root>
+)
