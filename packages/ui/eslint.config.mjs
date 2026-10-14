@@ -92,7 +92,15 @@ const config = tseslint.config(
       // ui stays framework-agnostic: no Next.js (or other app framework) imports.
       'no-restricted-imports': [
         'error',
-        { patterns: [{ group: ['next', 'next/*'], message: 'ui must not depend on Next.js.' }] },
+        {
+          patterns: [
+            { group: ['next', 'next/*'], message: 'ui must not depend on Next.js.' },
+            {
+              group: ['@radix-ui/*', 'radix-ui'],
+              message: 'Base UI is the headless foundation (as in the webapp): use @base-ui/react.',
+            },
+          ],
+        },
       ],
     },
   },
