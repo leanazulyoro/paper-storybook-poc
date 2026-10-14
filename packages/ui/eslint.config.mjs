@@ -34,6 +34,25 @@ const policy = [
     selector: `:matches(JSXAttribute[name.name="className"], CallExpression[callee.name="cn"]) Literal[value=${FOCUS}]`,
     message: 'Use focusRing (src/focusRing.ts): one ring for every component, look set by Paper tokens.',
   },
+  // States: the .tsx never picks visual classes by state. Expose the state as a data attribute
+  // (Base UI's, or data-<state> for code-owned state) and style it in .styles.ts.
+  {
+    selector: `:matches(JSXAttribute[name.name="className"], CallExpression[callee.name="cn"]) :matches(ConditionalExpression, LogicalExpression)`,
+    message:
+      'No classes picked by state in the .tsx: expose the state as a data attribute and style it in .styles.ts (data-<state>:).',
+  },
+  {
+    selector: `MemberExpression[computed=true]:matches([object.name="s"], [object.object.name="s"]) > :matches(ConditionalExpression, LogicalExpression).property`,
+    message:
+      'No style variant picked by state in the .tsx: expose the state as a data attribute and style it in .styles.ts (data-<state>:).',
+  },
+  // Behaviour: interactive widgets start from a Base UI part (keyboard, focus, dismissal, aria).
+  {
+    selector:
+      'JSXAttribute[name.name="role"] > Literal[value=/^(listbox|option|combobox|menu|menubar|menuitem\\w*|dialog|alertdialog|tablist|tab|tabpanel|tooltip|switch|slider|radiogroup|radio|checkbox|tree|treeitem|grid)$/]',
+    message:
+      'Hand-built widget role: start from a Base UI part (Select, Menu, Dialog, Tabs…), which brings keyboard and focus behaviour.',
+  },
   // Links: ui never renders <a>; the app passes its own link via a slot or a `render` prop.
   {
     selector: 'JSXOpeningElement[name.name="a"]',

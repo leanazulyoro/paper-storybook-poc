@@ -1,7 +1,8 @@
 'use client'
 
 // Behaviour lives here and must survive every Paper sync: clipboard write, copied state,
-// auto-reset timer, live-region announcement. Visuals come from CopyButton.styles.ts.
+// auto-reset timer, live-region announcement. Visuals come from CopyButton.styles.ts; the copied
+// state reaches them as `data-copied`.
 import { useEffect, useState, type ReactNode } from 'react'
 import { cn } from '../cn'
 import { focusRing } from '../focusRing'
@@ -48,17 +49,16 @@ export const CopyButton = ({
     }
   }
 
-  const state = s.state[copied ? 'copied' : 'idle']
-
   return (
     <button
       type="button"
       onClick={handleClick}
       aria-label={copied ? copiedLabel : copyLabel}
-      className={cn(s.base, state.root, 'cursor-pointer', focusRing)}
+      data-copied={copied || undefined}
+      className={cn(s.base, 'cursor-pointer', focusRing)}
     >
       <span aria-live="polite">{copied ? copiedLabel : label}</span>
-      <Icon name={copied ? 'check' : 'copy'} className={state.icon} />
+      <Icon name={copied ? 'check' : 'copy'} className={s.icon} />
     </button>
   )
 }

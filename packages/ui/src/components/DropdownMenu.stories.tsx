@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, fn, userEvent, within, waitFor } from 'storybook/test'
+import { listKeyboard } from '../stories/listKeyboard'
 import { NetworkDropdown, networks } from '../stories/NetworkDropdown'
 import { pseudo } from '../stories/StatesBoard'
 import { Button } from './Button'
@@ -88,26 +89,8 @@ export const PointerSelection: Story = {
 export const KeyboardSelection: Story = {
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement)
-    const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
     const trigger = canvas.getByRole('combobox')
-    // Base UI moves focus to the highlighted option (not aria-activedescendant on the trigger).
-    const current = () =>
-      page.queryAllByRole('option').find((o) => o.hasAttribute('data-highlighted'))?.textContent
-    // Base UI ignores list keys until the popup has finished opening (slower under load, e.g. CI),
-    // so press until the key takes effect: wait for the result, not for a fixed time.
-    const step = (key: string, expected: string) =>
-      waitFor(
-        async () => {
-          if (current() !== expected) await userEvent.keyboard(key)
-          if (current() !== expected) throw new Error(`expected ${expected} highlighted, got ${current()}`)
-        },
-        { timeout: 3000, interval: 100 },
-      )
-    const open = async (key: string) => {
-      await waitFor(() => expect(trigger).toHaveFocus())
-      await userEvent.keyboard(key)
-      await page.findByRole('listbox')
-    }
+    const { current, step, open } = listKeyboard(canvasElement, trigger)
     trigger.focus()
     await open('{ArrowDown}')
     await waitFor(() => expect(current()).toBe('Ethereum')) // opens on the selected option

@@ -105,16 +105,20 @@ Mapping rules:
 - Base frame = default variant. A **state frame** contributes only its difference from its base
   frame, emitted with the variant for that state. Which variant depends on what renders it:
 
-  | Paper frame        | Native element (Button, Input) | Base UI part (DropdownMenu, …)                                                                                                 |
-  | ------------------ | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
-  | `…/Hover`          | `not-disabled:hover:`          | `not-data-disabled:hover:` (trigger); `not-data-selected:data-highlighted:` (item: hover and keyboard highlight are one state) |
-  | `…/Active`         | `not-disabled:active:`         | `not-data-disabled:active:`                                                                                                    |
-  | `…/Disabled`       | `disabled:`                    | `data-disabled:`                                                                                                               |
-  | `…/Selected`       | n/a                            | `data-selected:`                                                                                                               |
-  | `…/Open` (trigger) | n/a                            | `data-popup-open:`                                                                                                             |
+  | Paper frame        | Native element (Button) | Base UI part (DropdownMenu, Input, …)                                                                                          |
+  | ------------------ | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+  | `…/Hover`          | `not-disabled:hover:`   | `not-data-disabled:hover:` (trigger); `not-data-selected:data-highlighted:` (item: hover and keyboard highlight are one state) |
+  | `…/Active`         | `not-disabled:active:`  | `not-data-disabled:active:`                                                                                                    |
+  | `…/Disabled`       | `disabled:`             | `data-disabled:`                                                                                                               |
+  | `…/Selected`       | n/a                     | `data-selected:`                                                                                                               |
+  | `…/Open` (trigger) | n/a                     | `data-popup-open:`                                                                                                             |
+  | `…/Error`          | n/a                     | `data-invalid:` (every Field part: control, description, error)                                                                |
 
   A disabled control never reacts (hence the `not-…disabled` guards). Never emit conditional
   classes for states: the `.tsx` doesn't pick classes by state, Base UI's attributes do.
+  A **code-owned state** with no Base UI attribute (e.g. `CopyButton/Copied`) maps to
+  `data-<state>:` (`data-copied:`); the `.tsx` sets the attribute. A new one needs that one-line
+  `.tsx` change first (code commit before the sync). Lint rejects classes picked by state in `.tsx`.
 
 - **Child state:** if a state frame's difference is on a _child_ layer (e.g. `Trigger/Open` rotates
   the chevron), put `group` on the component root key and the variant on the child key:

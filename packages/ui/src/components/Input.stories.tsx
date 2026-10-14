@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, within } from 'storybook/test'
 import { pseudo, StatesBoard } from '../stories/StatesBoard'
 import { Input } from './Input'
 
@@ -10,8 +11,23 @@ const meta: Meta<typeof Input> = {
 export default meta
 type Story = StoryObj<typeof Input>
 
-export const Default: Story = {}
-export const Error: Story = { args: { defaultValue: '2,000.00', error: 'Exceeds balance' } }
+// Base UI Field wires the label, the hint/error description and aria-invalid.
+export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole('textbox', { name: 'Amount' })
+    await expect(input).toHaveAccessibleDescription('Balance: 1,240.50 USDC')
+    await expect(input).not.toHaveAttribute('aria-invalid')
+  },
+}
+export const Error: Story = {
+  args: { defaultValue: '2,000.00', error: 'Exceeds balance' },
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole('textbox', { name: 'Amount' })
+    await expect(input).toHaveAccessibleDescription('Exceeds balance')
+    await expect(input).toHaveAttribute('aria-invalid', 'true')
+    await expect(input).toHaveAttribute('data-invalid')
+  },
+}
 
 // Mirrors the Paper board.
 export const AllVariants: Story = {

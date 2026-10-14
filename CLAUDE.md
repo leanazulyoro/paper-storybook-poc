@@ -33,7 +33,9 @@ See `README.md` (phases, success bar) and `FINDINGS.md` (every decision and why)
 - Foundation: Base UI (`@base-ui/react`, exact-pinned; Radix is banned). Compose with the `render`
   prop (`<Button render={<Link href="/" />}>`), never `asChild`. Interactive states are styled
   through Base UI's data attributes (`data-highlighted:`, `data-selected:`, `data-popup-open:`) in
-  `*.styles.ts`; the `.tsx` never picks visual classes by state.
+  `*.styles.ts`; the `.tsx` never picks visual classes by state (code-owned state is exposed as
+  `data-<state>`, e.g. CopyButton's `data-copied`). Widgets (listbox, menu, dialog, tabs…) start
+  from a Base UI part, never a hand-written `role`; forms use Base UI `Field` (Input).
 
 ## Storybook
 
@@ -41,4 +43,5 @@ Sections mirror the Paper pages: Tokens, Icons, Components, Blocks, Pages. `Stat
 interaction states side by side (pseudo-states addon) for 1:1 comparison with Paper's state
 frames. Stories that mirror a Paper frame are tagged `paper` (with `parameters.paper` naming the
 frame); untagged stories are code-only (behaviour tests, stress cases) and never compared with
-Paper.
+Paper. Keyboard tests of Base UI popups use `src/stories/listKeyboard.ts` (waits for each key to take
+effect; Base UI drops keys right after opening).
