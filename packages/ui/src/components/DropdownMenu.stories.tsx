@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, fn, userEvent, within, waitFor } from 'storybook/test'
 import { NetworkDropdown, networks } from '../stories/NetworkDropdown'
 import { pseudo } from '../stories/StatesBoard'
+import { Button } from './Button'
 import { DropdownMenu } from './DropdownMenu'
 
 const meta: Meta<typeof DropdownMenu> = {
@@ -124,10 +125,10 @@ export const KeyboardSelection: Story = {
 
 export const TabAndOutsideDismissal: Story = {
   render: (args) => (
-    <>
+    <div className="flex items-start gap-4">
       <NetworkDropdown {...args} />
-      <button type="button">Next control</button>
-    </>
+      <Button variant="secondary">Next control</Button>
+    </div>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
@@ -152,10 +153,10 @@ export const TabAndOutsideDismissal: Story = {
 // like a native <select>. (Tab still commits the keyboard-active option, see above.)
 export const HoverThenOutsideClickKeepsValue: Story = {
   render: (args) => (
-    <>
+    <div className="flex items-start gap-4">
       <NetworkDropdown {...args} />
-      <button type="button">Next control</button>
-    </>
+      <Button variant="secondary">Next control</Button>
+    </div>
   ),
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement)
