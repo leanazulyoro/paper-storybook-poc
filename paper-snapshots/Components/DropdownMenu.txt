@@ -53,8 +53,8 @@
               <div className="font-sans font-semibold w-max text-foreground text-sm/tight">
                 Ethereum
               </div>
-              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block' }}>
-                <path d="M4 10L8 6L12 10" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block', rotate: '180deg', transformOrigin: '50% 50%' }}>
+                <path d="M4 6L8 10L12 6" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
             <div className="flex flex-col absolute left-[0px] top-[calc(100%+var(--spacing-2))] w-[232px] p-1 rounded-md [background-color:var(--color-background)] border border-solid border-border">
@@ -96,8 +96,8 @@
               <div className="font-sans font-semibold w-max text-foreground text-sm/tight">
                 Ethereum
               </div>
-              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block' }}>
-                <path d="M4 10L8 6L12 10" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block', rotate: '180deg', transformOrigin: '50% 50%' }}>
+                <path d="M4 6L8 10L12 6" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
             <div className="flex flex-col absolute top-[calc(100%+var(--spacing-2))] w-[232px] p-1 rounded-md right-[0px] [background-color:var(--color-background)] border border-solid border-border">
