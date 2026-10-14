@@ -15,6 +15,8 @@ export const Error: Story = { args: { defaultValue: '2,000.00', error: 'Exceeds 
 
 // Mirrors the Paper board.
 export const AllVariants: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Components › Input' },
   render: () => (
     <div className="flex gap-6">
       <Input className="w-[232px]" label="Amount" placeholder="0.00" hint="Balance: 1,240.50 USDC" />
@@ -26,7 +28,8 @@ export const AllVariants: Story = {
 // Interaction states forced via pseudo-states; compare with the Paper Input board
 // (Input/Default, Input/Focus, Input/Error).
 export const States: Story = {
-  parameters: { pseudo },
+  tags: ['paper'],
+  parameters: { paper: 'Components › Input (state frames)', pseudo },
   render: () => (
     <StatesBoard
       columns={['Default', 'Focus', 'Error']}

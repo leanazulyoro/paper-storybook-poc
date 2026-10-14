@@ -21,6 +21,8 @@ export const AsLink: Story = {
 
 // Mirrors the Paper board.
 export const AllVariants: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Components › Button' },
   render: () => (
     <div className="flex items-center gap-4">
       <Button>Deposit</Button>
@@ -34,7 +36,8 @@ export const AllVariants: Story = {
 // (Button/Primary/Hover, Button/Secondary/Hover, Button/Primary/Focus, Button/Disabled).
 // "Disabled + hover" checks that hover never applies to a disabled button.
 export const States: Story = {
-  parameters: { pseudo },
+  tags: ['paper'],
+  parameters: { paper: 'Components › Button (state frames)', pseudo },
   render: () => (
     <StatesBoard
       columns={['Default', 'Hover', 'Focus', 'Disabled', 'Disabled + hover']}

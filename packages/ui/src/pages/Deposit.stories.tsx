@@ -61,7 +61,7 @@ const meta: Meta<typeof DepositPage> = {
 export default meta
 type Story = StoryObj<typeof DepositPage>
 
-export const Default: Story = {}
+export const Default: Story = { tags: ['paper'], parameters: { paper: 'Pages › Deposit' } }
 export const ExceedsBalance: Story = { args: { value: '2,000.00', error: 'Exceeds balance' } }
 export const Submitting: Story = { args: { value: '250.00', submitting: true } }
 export const Deposited: Story = { args: { deposit: '250.00 USDC' } }

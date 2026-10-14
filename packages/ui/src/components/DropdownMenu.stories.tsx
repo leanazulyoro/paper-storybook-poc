@@ -51,6 +51,8 @@ export const End: Story = {
 
 // The reviewed open view: Ethereum selected, Arbitrum hovered, Polygon disabled.
 export const Open: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Components › DropdownMenu › Open · align start' },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal
@@ -150,7 +152,7 @@ export const TabAndOutsideDismissal: Story = {
 }
 
 // Hovering only highlights: clicking outside closes the menu and keeps the selected value,
-// like a native <select>. (Tab still commits the keyboard-active option, see above.)
+// like a native <select>. (Tab also closes without selecting: Base UI's behaviour.)
 export const HoverThenOutsideClickKeepsValue: Story = {
   render: (args) => (
     <div className="flex items-start gap-4">
@@ -183,7 +185,11 @@ export const DisabledTrigger: Story = {
 }
 
 export const States: Story = {
-  parameters: { pseudo: { ...pseudo, hover: ['[data-state="hover"] [role="combobox"]'] } },
+  tags: ['paper'],
+  parameters: {
+    paper: 'Components › DropdownMenu (trigger states)',
+    pseudo: { ...pseudo, hover: ['[data-state="hover"] [role="combobox"]'] },
+  },
   decorators: [
     (Story) => (
       <div className="h-80 w-[824px] p-8">

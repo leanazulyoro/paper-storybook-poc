@@ -38,13 +38,19 @@ const meta: Meta<typeof DepositForm> = {
 export default meta
 type Story = StoryObj<typeof DepositForm>
 
-export const Default: Story = {}
+export const Default: Story = { tags: ['paper'], parameters: { paper: 'Blocks › DepositForm/Default' } }
 export const WithValue: Story = { args: { value: '250.00' } }
-export const Error: Story = { args: { value: '2,000.00', error: 'Exceeds balance' } }
+export const Error: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Blocks › DepositForm/Error' },
+  args: { value: '2,000.00', error: 'Exceeds balance' },
+}
 export const Submitting: Story = { args: { value: '250.00', submitting: true, submitLabel: 'Depositing…' } }
 
 // i18n stress test: long German strings, link mid-sentence.
 export const LongText: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Blocks › DepositForm/LongText' },
   args: {
     title: 'USDC einzahlen',
     network: <NetworkDropdown label="Netzwerk" align="end" />,
@@ -62,6 +68,8 @@ export const LongText: Story = {
 }
 
 export const NetworkOpen: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Blocks › DepositForm/NetworkOpen' },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     const page = within(canvasElement.ownerDocument.body) // the popup renders in a portal

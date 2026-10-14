@@ -23,6 +23,8 @@ const meta: Meta<Args> = {
 export default meta
 
 export const All: StoryObj<Args> = {
+  tags: ['paper'],
+  parameters: { paper: 'Icons › Mono, Color' },
   render: ({ size, color }) => (
     <div className="flex flex-col gap-8 font-sans" style={{ color }}>
       {groups.map((group) => (

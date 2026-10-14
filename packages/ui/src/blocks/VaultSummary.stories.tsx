@@ -26,12 +26,18 @@ const meta: Meta<typeof VaultSummary> = {
 export default meta
 type Story = StoryObj<typeof VaultSummary>
 
-export const Default: Story = {}
+export const Default: Story = { tags: ['paper'], parameters: { paper: 'Blocks › VaultSummary/Default' } }
 
-export const Paused: Story = { args: { status: <Badge tone="neutral">Paused</Badge> } }
+export const Paused: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Blocks › VaultSummary/Paused' },
+  args: { status: <Badge tone="neutral">Paused</Badge> },
+}
 
 // i18n stress test: long German strings.
 export const LongText: Story = {
+  tags: ['paper'],
+  parameters: { paper: 'Blocks › VaultSummary/LongText' },
   args: {
     title: 'USDC-Tresor mit variabler Rendite',
     status: <Badge tone="warning">Geringe Liquidität</Badge>,
