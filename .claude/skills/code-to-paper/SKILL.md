@@ -67,7 +67,21 @@ When the target entry in `paper.config.json` has `"id": null`, the file doesn't 
    when the entry has an id: open it instead, so reruns never produce duplicates.
 2. `open_file` it and build in order, checking each layer before the next: tokens
    (`create_tokens` from `theme.css`) → Icons → Components (per "New component" above) → Blocks →
-   Pages, with the page names and boards listed in `paper-to-code` step 0.
+   Pages, with the page names and boards listed in `paper-to-code` step 0 (`arrange_pages` sets
+   their order).
+   - **Code is the only source:** classes from `*.styles.ts`, structure from the `.tsx`, variants,
+     sample copy and board contents from the `paper`-tagged stories (`parameters.paper` names the
+     board). `paper-snapshots/` describe another file: don't read them.
+   - **Names:** one board per component/block, named after it; frames `Component/Variant[/State]`
+     from the styles files' `// Frame/Name` comments, one per `paper` story variant for blocks
+     (`PageHeader/Default`, `PageHeader/LongText`); repeated rows `Row/<Label>` (`Stat/TVL`).
+   - **Text layers use `var(--font-sans)`** so the file looks like the app (Paper defaults to
+     system-ui); mapping ignores the family (`paper-to-code`: font family is inherited).
+   - **Typography:** Paper's MCP can't create text styles. Build the Typography board as one
+     `Type/<style>` text layer per `typography.css` style with its exact values; text elsewhere
+     carries raw values and maps back by exact match.
+   - Skip the Paper guide's design brief: the code is the brief. `create_artboard` ignores
+     `left`/`top`: position boards with `update_styles` afterwards.
 3. Switch `source` to the new entry only after its round trip passes: `paper-to-code` against it
    produces no code diff.
 

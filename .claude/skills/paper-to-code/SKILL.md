@@ -39,6 +39,7 @@ Source boards and their snapshot files:
 | Components › Button, Input, Badge, Card, CopyButton, DropdownMenu | `paper-snapshots/Components/<Board>.txt`   |
 | Blocks › DepositForm, VaultSummary, PageHeader                    | `paper-snapshots/Blocks/<Board>.txt`       |
 | Icons › Mono, Color                                               | `paper-snapshots/Icons/<Board>.txt`        |
+| Pages › Deposit (artboard → `Page.styles.ts`)                     | `paper-snapshots/Pages/Deposit.txt`        |
 
 1. `get_basic_info` per page for board ids (pages can gain boards: add them to the table).
 2. `get_jsx` every source board and overwrite its snapshot with the output **verbatim** (the JSX
@@ -137,8 +138,24 @@ Mapping rules:
 - Text layer of a single-label component (Button, Badge): its text classes go on the root
   (the label is `children`). Text layer `w-max` (Paper's "no wrap") → `whitespace-nowrap`.
 - SVG `stroke`/`fill="var(--color-x)"` inside a component → icon `text-x` (icons paint `currentColor`).
-- Ignore board-only styles: artboard padding/background, board `flex-wrap`, `font-[system-ui,…]`,
-  `wrap-anywhere`, `antialiased`, sample copy (all text comes from props in code).
+- Ignore board-only styles: artboard padding/background, board `flex-wrap`, `wrap-anywhere`,
+  `antialiased`, sample frame sizes (`w-[232px]`, a board column's `shrink-0`), sample copy (all
+  text comes from props in code).
+- **Font family is inherited:** never emit `font-sans`, `font-[system-ui,…]` or
+  `[font-family:var(--font-sans)]`. The body sets `font-sans` (`styles/index.css`) and Tailwind's
+  preflight makes controls inherit it. Emit a family only when it isn't `--font-sans` (e.g. a mono
+  token).
+- **Equivalent is not different.** Paper can't express some CSS, so a few exports differ from code
+  without differing in look. Keep the code's form:
+  - a component root exported `flex` stays `inline-flex` where the code has it (Button, Badge,
+    CopyButton, DropdownMenu trigger: Paper has no inline layout);
+  - `grow` → `flex-1`;
+  - Input: Paper wraps the placeholder in a flex box (`flex items-center shrink-0` on `Field`);
+    a native `<input>` centres its own text, so drop those. The `Placeholder` layer's colour →
+    the `placeholder:` key; a `Value` layer's colour is the field's text colour;
+  - a text colour equal to its parent's is inherited: keep whatever the key has, don't add or drop
+    it;
+  - the page artboard's fixed height (`h-[900px]`) → `min-h-screen`.
 - A colour not bound to a token (`text-black`, raw hex) has no code equivalent (`reset.css` drops
   Tailwind's defaults): keep the existing token class and report it (step 0b).
 - A text layer whose size, line-height, weight and tracking **all** match a text style →
