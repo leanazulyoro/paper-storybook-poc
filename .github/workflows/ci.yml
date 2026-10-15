@@ -20,6 +20,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm typecheck
+      - name: Paper config is valid
+        run: node scripts/paper-config.mjs
       - name: Story tests (render + play functions, headless Chromium)
         run: |
           pnpm --filter @poc/ui exec playwright install --with-deps chromium

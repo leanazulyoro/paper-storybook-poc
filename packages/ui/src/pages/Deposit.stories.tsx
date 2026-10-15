@@ -1,4 +1,4 @@
-// Mirrors Paper "Jazzy nest" › Screens › Deposit, composed only from ui blocks.
+// Mirrors Paper "Jazzy nest" › Pages › Deposit, composed only from ui blocks.
 // The shipped page lives in apps/web (wired to real state + messages); this is its design mirror
 // with sample data, so Storybook and Paper can be compared screen to screen.
 import type { Meta, StoryObj } from '@storybook/react-vite'
@@ -10,6 +10,7 @@ import { DepositForm } from '../blocks/DepositForm'
 import { Page } from '../blocks/Page'
 import { PageHeader } from '../blocks/PageHeader'
 import { VaultSummary } from '../blocks/VaultSummary'
+import { paperBoard } from '../stories/paperBoard'
 
 type Args = { value: string; error?: string; deposit: string; submitting: boolean }
 
@@ -55,13 +56,13 @@ const DepositPage = ({ value: initialValue, error, deposit, submitting }: Args) 
 const meta: Meta<typeof DepositPage> = {
   title: 'Pages/Deposit',
   component: DepositPage,
-  parameters: { layout: 'fullscreen' },
+  parameters: { layout: 'fullscreen', paper: paperBoard({ board: 'Pages › Deposit', frameless: true }) },
   args: { value: '', deposit: '0.00 USDC', submitting: false },
 }
 export default meta
 type Story = StoryObj<typeof DepositPage>
 
-export const Default: Story = { tags: ['paper'], parameters: { paper: 'Pages › Deposit' } }
+export const Default: Story = { tags: ['paper'] }
 export const ExceedsBalance: Story = { args: { value: '2,000.00', error: 'Exceeds balance' } }
 export const Submitting: Story = { args: { value: '250.00', submitting: true } }
 export const Deposited: Story = { args: { deposit: '250.00 USDC' } }

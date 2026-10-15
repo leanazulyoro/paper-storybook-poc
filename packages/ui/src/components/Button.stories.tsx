@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { pseudo, StatesBoard } from '../stories/StatesBoard'
 import { Button } from './Button'
+import { paperBoard } from '../stories/paperBoard'
 
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
   component: Button,
+  parameters: { paper: paperBoard({ board: 'Components › Button', width: 560, layout: 'wrap' }) },
   args: { variant: 'primary', children: 'Deposit' },
 }
 export default meta
@@ -22,7 +24,6 @@ export const AsLink: Story = {
 // Mirrors the Paper board.
 export const AllVariants: Story = {
   tags: ['paper'],
-  parameters: { paper: 'Components › Button' },
   render: () => (
     <div className="flex items-center gap-4">
       <Button>Deposit</Button>
@@ -37,7 +38,7 @@ export const AllVariants: Story = {
 // "Disabled + hover" checks that hover never applies to a disabled button.
 export const States: Story = {
   tags: ['paper'],
-  parameters: { paper: 'Components › Button (state frames)', pseudo },
+  parameters: { pseudo },
   render: () => (
     <StatesBoard
       columns={['Default', 'Hover', 'Focus', 'Disabled', 'Disabled + hover']}

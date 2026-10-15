@@ -2,10 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import { pseudo, StatesBoard } from '../stories/StatesBoard'
 import { CopyButton } from './CopyButton'
+import { paperBoard } from '../stories/paperBoard'
 
 const meta: Meta<typeof CopyButton> = {
   title: 'Components/CopyButton',
   component: CopyButton,
+  parameters: { paper: paperBoard({ board: 'Components › CopyButton', width: 560, layout: 'wrap' }) },
   args: {
     value: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
     label: '0x71C7…976F',
@@ -55,7 +57,6 @@ export const ResetsAfterTimeout: Story = {
 // Mirrors the Paper board.
 export const AllVariants: Story = {
   tags: ['paper'],
-  parameters: { paper: 'Components › CopyButton' },
   render: (args) => (
     <div className="flex items-center gap-4">
       <CopyButton {...args} />
@@ -71,7 +72,7 @@ export const AllVariants: Story = {
 // (CopyButton/Idle, CopyButton/Idle/Focus, CopyButton/Copied). Copied is a data state: clicked.
 export const States: Story = {
   tags: ['paper'],
-  parameters: { paper: 'Components › CopyButton (state frames)', pseudo },
+  parameters: { pseudo },
   render: (args) => (
     <StatesBoard
       columns={['Idle', 'Focus', 'Copied']}

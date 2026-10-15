@@ -6,6 +6,8 @@ See `README.md` (phases, success bar) and `FINDINGS.md` (every decision and why)
 ## Layout
 
 - `packages/ui`: components, blocks, icons, tokens, Storybook (:6006). `apps/web`: Next app (:3100).
+- `paper.config.json`: the app's Paper files and `source` (the one syncs read); skills open files by
+  `id` (`node scripts/paper-config.mjs` prints it resolved). Never hardcode a Paper file name.
 - Node 22 (`.nvmrc`), pnpm. `pnpm lint`, `pnpm typecheck`, `pnpm test` (stories + play tests,
   headless Chromium), `pnpm storybook`, `pnpm dev`.
 
@@ -41,7 +43,9 @@ See `README.md` (phases, success bar) and `FINDINGS.md` (every decision and why)
 
 Sections mirror the Paper pages: Tokens, Icons, Components, Blocks, Pages. `States` stories show
 interaction states side by side (pseudo-states addon) for 1:1 comparison with Paper's state
-frames. Stories that mirror a Paper frame are tagged `paper` (with `parameters.paper` naming the
-frame); untagged stories are code-only (behaviour tests, stress cases) and never compared with
+frames. Stories that mirror a Paper frame are tagged `paper`; `parameters.paper` is their board spec
+(page › board, frame, label, caption, surface, width, layout: `src/stories/paperBoard.tsx`),
+declared once on `meta` and used to build the Paper board; Storybook applies only its surface.
+Untagged stories are code-only (behaviour tests, stress cases) and never compared with
 Paper. Keyboard tests of Base UI popups use `src/stories/listKeyboard.ts` (waits for each key to take
 effect; Base UI drops keys right after opening).

@@ -1,25 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button } from './Button'
 import { Card, CardBody, CardFooter, CardHeader } from './Card'
+import { paperBoard } from '../stories/paperBoard'
 
 const meta: Meta<typeof Card> = {
   title: 'Components/Card',
   component: Card,
-  // Paper shows the card on a muted board.
-  decorators: [
-    (Story) => (
-      <div className="bg-muted p-8">
-        <Story />
-      </div>
-    ),
-  ],
+  parameters: { paper: paperBoard({ board: 'Components › Card', surface: 'muted', width: 560 }) },
 }
 export default meta
 type Story = StoryObj<typeof Card>
 
 export const Default: Story = {
   tags: ['paper'],
-  parameters: { paper: 'Components › Card' },
   render: () => (
     <Card>
       <CardHeader title="USDC Vault" action="Ethereum" />

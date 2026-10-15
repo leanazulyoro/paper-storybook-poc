@@ -34,7 +34,10 @@ collaborator access; CI runs lint, types, tests and the sync check on every PR.
 
 ## 2. Paper file
 
-Open ["Jazzy nest"](https://app.paper.design/file/01M4DYBJFTV1WSY00VDCFZBF66) in Paper desktop. Its pages map 1:1 to Storybook:
+Open ["Jazzy nest"](https://app.paper.design/file/01M4DYBJFTV1WSY00VDCFZBF66) in Paper desktop. The skills
+find it through `paper.config.json` (`source` = the file syncs read, opened by id); to point them
+at your own copy, add an entry with its id and set `source` to it on your branch. Its pages map 1:1
+to Storybook:
 
 | Paper page | What's there                                                | Storybook  |
 | ---------- | ----------------------------------------------------------- | ---------- |

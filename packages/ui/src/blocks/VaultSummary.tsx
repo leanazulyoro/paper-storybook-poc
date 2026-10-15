@@ -1,4 +1,4 @@
-// Source: Paper "Jazzy nest" › Screens › Deposit › VaultSummary.
+// Source: Paper "Jazzy nest" › Pages › Deposit › VaultSummary.
 // Presentational: all text and values arrive pre-translated / pre-formatted.
 import type { ReactNode } from 'react'
 import { Card, CardBody, CardHeader } from '../components/Card'

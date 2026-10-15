@@ -2,10 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, within } from 'storybook/test'
 import { pseudo, StatesBoard } from '../stories/StatesBoard'
 import { Input } from './Input'
+import { paperBoard } from '../stories/paperBoard'
 
 const meta: Meta<typeof Input> = {
   title: 'Components/Input',
   component: Input,
+  parameters: { paper: paperBoard({ board: 'Components › Input', width: 560, layout: 'wrap' }) },
   args: { label: 'Amount', placeholder: '0.00', hint: 'Balance: 1,240.50 USDC', className: 'w-[232px]' },
 }
 export default meta
@@ -32,7 +34,6 @@ export const Error: Story = {
 // Mirrors the Paper board.
 export const AllVariants: Story = {
   tags: ['paper'],
-  parameters: { paper: 'Components › Input' },
   render: () => (
     <div className="flex gap-6">
       <Input className="w-[232px]" label="Amount" placeholder="0.00" hint="Balance: 1,240.50 USDC" />
@@ -45,7 +46,7 @@ export const AllVariants: Story = {
 // (Input/Default, Input/Focus, Input/Error).
 export const States: Story = {
   tags: ['paper'],
-  parameters: { paper: 'Components › Input (state frames)', pseudo },
+  parameters: { pseudo },
   render: () => (
     <StatesBoard
       columns={['Default', 'Focus', 'Error']}

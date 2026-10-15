@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { TextLink } from './components/TextLink'
+import { paperBoard } from './stories/paperBoard'
 import { textStyles } from './styles/typography'
 
 // Mirrors the "Colors & Type" board in Paper (Tokens page).
@@ -17,8 +18,13 @@ const colors = [
   'focus',
 ]
 
+const Section = ({ children }: { children: string }) => (
+  <h2 className="text-xs/tight font-medium tracking-wide text-muted-foreground uppercase">{children}</h2>
+)
+
 const Tokens = () => (
   <div className="flex flex-col gap-8 p-8">
+    <Section>Color</Section>
     <div className="flex flex-wrap gap-4">
       {colors.map((name) => (
         <div key={name} className="flex w-40 flex-col gap-2">
@@ -31,6 +37,7 @@ const Tokens = () => (
       ))}
     </div>
     <div className="flex flex-col gap-3">
+      <Section>Type · Inter</Section>
       <span className="text-xl leading-display font-semibold tracking-tight">
         xl 28 · Earn on idle assets
       </span>
@@ -51,7 +58,13 @@ export default meta
 
 export const ColorsAndType: StoryObj<typeof Tokens> = {
   tags: ['paper'],
-  parameters: { paper: 'Tokens › Colors & Type' },
+  parameters: {
+    paper: paperBoard({
+      board: 'Tokens › Colors & Type',
+      label: 'Design tokens · source of truth for @poc/ui',
+      width: 960,
+    }),
+  },
 }
 
 // Mirrors the "Typography" board in Paper (Tokens page). Class names are literal so Tailwind
@@ -71,7 +84,7 @@ const typography: Record<(typeof textStyles)[number], { className: string; spec:
 
 export const Typography: StoryObj<typeof Tokens> = {
   tags: ['paper'],
-  parameters: { paper: 'Tokens › Typography' },
+  parameters: { paper: paperBoard({ board: 'Tokens › Typography', label: 'Typography · text styles' }) },
   render: () => (
     <div className="flex flex-col gap-5 p-8 font-sans text-foreground">
       {textStyles.map((name) => (
