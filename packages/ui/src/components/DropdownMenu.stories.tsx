@@ -197,7 +197,7 @@ export const States: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="h-80 w-max">
+      <div className="h-80 w-[824px] p-8">
         <Story />
       </div>
     ),

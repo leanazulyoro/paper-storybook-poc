@@ -1,10 +1,10 @@
 import type { Preview } from '@storybook/react-vite'
 import '../src/styles/index.css'
-import { withPaperBoard } from '../src/stories/paperBoard'
+import { withPaperSurface } from '../src/stories/paperBoard'
 
 const preview: Preview = {
-  // `paper` stories get their Paper board's label, caption and surface (src/stories/paperBoard.tsx).
-  decorators: [withPaperBoard],
+  // Muted Paper boards (Card, blocks) get the same background here (src/stories/paperBoard.tsx).
+  decorators: [withPaperSurface],
   parameters: {
     layout: 'centered',
     // Same order as the Paper file's pages.

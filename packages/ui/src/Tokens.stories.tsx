@@ -23,7 +23,7 @@ const Section = ({ children }: { children: string }) => (
 )
 
 const Tokens = () => (
-  <div className="flex flex-col gap-8">
+  <div className="flex flex-col gap-8 p-8">
     <Section>Color</Section>
     <div className="flex flex-wrap gap-4">
       {colors.map((name) => (
@@ -86,7 +86,7 @@ export const Typography: StoryObj<typeof Tokens> = {
   tags: ['paper'],
   parameters: { paper: paperBoard({ board: 'Tokens › Typography', label: 'Typography · text styles' }) },
   render: () => (
-    <div className="flex flex-col gap-5 font-sans text-foreground">
+    <div className="flex flex-col gap-5 p-8 font-sans text-foreground">
       {textStyles.map((name) => (
         <div key={name} className="flex items-baseline gap-6">
           <span className="w-32 shrink-0 text-small text-muted-foreground">{typography[name].spec}</span>
