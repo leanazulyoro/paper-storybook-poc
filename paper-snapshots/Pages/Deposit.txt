@@ -1,0 +1,95 @@
+    <div className="[font-synthesis:none] wrap-anywhere text-xs leading-4 flex overflow-clip items-center font-sans flex-col py-[64px] gap-8 bg-muted antialiased">
+      <div className="flex flex-col w-[824px] gap-1">
+        <div className="font-semibold tracking-tight font-[system-ui,sans-serif] text-foreground text-xl/display">
+          Deposit
+        </div>
+        <div className="font-[system-ui,sans-serif] text-muted-foreground text-sm/tight">
+          Earn variable yield on idle USDC. Withdraw anytime.
+        </div>
+      </div>
+      <div className="flex items-start w-[824px] gap-6">
+        <div className="flex flex-col w-sm rounded-md shrink-0 [background-color:var(--color-background)] border border-solid border-border">
+          <div className="flex items-center justify-between py-4 px-6 border-b border-b-solid border-b-border">
+            <div className="font-semibold font-[system-ui,sans-serif] text-foreground text-base/normal">
+              USDC Vault
+            </div>
+            <div className="flex items-center h-6 font-medium px-2 rounded-full shrink-0 bg-success/tint">
+              <div className="flex font-medium w-max font-[system-ui,sans-serif] text-success text-xs/tight">
+                Active
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col p-6 gap-1">
+            <div className="font-[system-ui,sans-serif] text-muted-foreground text-sm/tight">
+              Current APY
+            </div>
+            <div className="font-semibold tracking-tight font-[system-ui,sans-serif] text-foreground text-xl/display">
+              5.42%
+            </div>
+            <div className="flex flex-col pt-4 gap-2">
+              <div className="flex justify-between gap-4">
+                <div className="font-[system-ui,sans-serif] text-muted-foreground text-sm/tight">
+                  Total deposits
+                </div>
+                <div className="font-medium text-right font-[system-ui,sans-serif] flex justify-end flex-wrap text-foreground text-sm/tight">
+                  $48.2M
+                </div>
+              </div>
+              <div className="flex justify-between gap-4">
+                <div className="font-[system-ui,sans-serif] text-muted-foreground text-sm/tight">
+                  Your deposit
+                </div>
+                <div className="font-medium text-right font-[system-ui,sans-serif] flex justify-end flex-wrap text-foreground text-sm/tight">
+                  0.00 USDC
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col w-sm rounded-md shrink-0 [background-color:var(--color-background)] border border-solid border-border">
+          <div className="flex items-center justify-between py-4 px-6 border-b border-b-solid border-b-border">
+            <div className="font-semibold font-[system-ui,sans-serif] text-foreground text-base/normal">
+              Deposit USDC
+            </div>
+            <div className="flex items-center justify-center h-[40px] w-max shrink-0 px-4 rounded-md gap-2 bg-muted border border-solid border-border">
+              <div className="font-sans font-semibold w-max text-foreground text-sm/tight">
+                Ethereum
+              </div>
+              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: '0', display: 'inline-block' }}>
+                <path d="M4 6L8 10L12 6" fill="none" stroke="var(--color-foreground)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          </div>
+          <div className="flex flex-col p-6 gap-4">
+            <div className="flex flex-col w-full gap-2">
+              <div className="font-medium font-[system-ui,sans-serif] text-foreground text-sm/tight">
+                Amount
+              </div>
+              <div className="flex items-center h-[44px] px-3 rounded-md shrink-0 [background-color:var(--color-background)] border border-solid border-border">
+                <div className="font-[system-ui,sans-serif] text-muted-foreground text-sm/tight">
+                  0.00
+                </div>
+              </div>
+              <div className="font-[system-ui,sans-serif] text-muted-foreground text-xs/tight">
+                Balance: 1,240.50 USDC
+              </div>
+            </div>
+            <div className="flex gap-1">
+              <div className="font-[system-ui,sans-serif] text-muted-foreground text-xs/tight">
+                By depositing you accept the
+              </div>
+              <div className="font-medium font-[system-ui,sans-serif] underline-offset-2 [text-decoration:underline_1px] [color:var(--color-primary)] text-xs/tight">
+                vault terms
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-end py-4 px-6 gap-2 border-t border-t-solid border-t-border">
+            <div className="flex items-center justify-center h-[40px] font-semibold px-4 rounded-md grow opacity-disabled [background-color:var(--color-primary)]">
+              <div className="flex font-semibold font-[system-ui,sans-serif] [color:var(--color-primary-foreground)] text-sm/tight">
+                Deposit
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
