@@ -43,7 +43,8 @@ Source boards and their snapshot files:
 
 1. `get_basic_info` per page for board ids (pages can gain boards: add them to the table).
 2. `get_jsx` every source board and overwrite its snapshot with the output **verbatim** (the JSX
-   between the parentheses, nothing else).
+   between the parentheses, nothing else), then run `node scripts/normalize-snapshots.mjs`: it
+   strips Paper's node ids (`id="1K-0"`), which change with every edit and aren't design.
 3. `git diff paper-snapshots`: only the boards that changed need mapping. For a changed board,
    `get_tree_summary` gives the layer names (`Component/Variant`, `Stat/TVL`…) the export lacks.
 4. A missing snapshot (first sync, new board): compare the whole board against its styles file

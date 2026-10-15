@@ -40,8 +40,9 @@ this checkpoint; honor any explicit user review requirement on the current edits
 6. **Round-trip check**: `get_jsx` the changed component and confirm it maps back to exactly the
    code's classes (per the `paper-to-code` rules). If it wouldn't, the next sync reverts the fix.
 7. **Refresh snapshots** of every source board you touched (`paper-snapshots/`, see
-   `paper-to-code` step 0): overwrite with the new `get_jsx` output, so the next sync's diff shows
-   only the designer's changes, not yours. Commit them with a non-sync message (`chore(paper): …`).
+   `paper-to-code` step 0): overwrite with the new `get_jsx` output and run
+   `node scripts/normalize-snapshots.mjs`, so the next sync's diff shows only the designer's
+   changes, not yours. Commit them with a non-sync message (`chore(paper): …`).
 
 ## New component (not just a fix)
 
