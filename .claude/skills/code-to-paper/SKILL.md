@@ -73,17 +73,34 @@ When the target entry in `paper.config.json` has `"id": null`, the file doesn't 
      sample copy and board contents from the `paper`-tagged stories. `paper-snapshots/` describe
      another file: don't read them.
    - **Boards come from `parameters.paper`** (type and fields: `src/stories/paperBoard.tsx`;
-     Storybook draws the same framing, so it is the visual reference). One board per `board`
-     (`Page › Board`); its frames are its `paper` stories in story order: a story with `frame` is
-     that one frame, a multi-variant story (`AllVariants`, `States`) contributes its frames, named
-     from the styles files' `// Frame/Name` comments. Draw what the story renders, its section
-     headers and column labels included (layers `Section/<text>`, `Column/<text>`).
-   - **Board look:** padding 32px, gap 16px; `label` (default: the board name) on top as a text
-     layer `Label` in uppercase, 12/20 medium, `tracking-wide`, muted-foreground; `caption` under
-     the frames as `Caption`, same style, line breaks kept; background `surface` (default
-     background); `width` px or fit content; frames per `layout`: `row` = side by side, top
-     aligned, gap 32px; `wrap` = wrapping row, gap 24px; `column` (default) = stacked, gap 24px.
-     A `frameless` story is the artboard itself (Pages): no label, caption or padding.
+     Storybook shows only the surface, so label, caption, width and layout come from the spec
+     alone). One board per `board` (`Page › Board`), built from its `paper` stories in story order:
+     - a story with `frame` is that one frame;
+     - a multi-variant story (`AllVariants`) contributes its base frames, named from the styles
+       files' `// Frame/Name` comments;
+     - a `States` story becomes a **States grid**: `Column/<state>` headers, one `Row/<name>` per
+       row with a `Section/<name>` row label, `Cell` slots holding only the state frames (a cell
+       equal to a base frame, e.g. Default, stays empty);
+     - every `// Frame/Name` in the styles files gets a frame even when no story renders it
+       (`Button/Primary/Active`: Storybook can't force `:active`): add its column to the grid;
+     - a story that repeats a frame already drawn (DropdownMenu `Open` = "Open · align start") is
+       drawn once;
+     - name a clone after the state it shows (the empty form's submit is `Button/Disabled`).
+
+     Draw what the story renders, its section headers and column labels included (layers
+     `Section/<text>`, `Column/<text>`).
+
+   - **Board look:** a vertical stack, padding 32px, gap 16px, height fit-content:
+     1. `label` (default: the board name) as a text layer `Label`: uppercase, 12/20 medium,
+        `tracking-wide`, muted-foreground;
+     2. a `Frames` layer holding the frames per `layout`: `row` = side by side, top aligned, gap
+        32px; `wrap` = wrapping row, gap 24px; `column` (default) = stacked, gap 24px;
+     3. `caption` as a text layer `Caption`: 12/20 medium, muted-foreground, sentence case (no
+        uppercase, no tracking), line breaks kept.
+
+     Background `surface` (default background); `width` px or fit content. A `frameless` story is
+     the artboard itself (Pages): no label, caption or padding.
+
    - **Placement:** a page's boards left to right in Storybook sidebar order, top aligned, 160px
      apart.
    - **Names:** frames `Component/Variant[/State]`; repeated rows `Row/<Label>` (`Stat/TVL`); a
@@ -97,6 +114,11 @@ When the target entry in `paper.config.json` has `"id": null`, the file doesn't 
      carries raw values and maps back by exact match.
    - Skip the Paper guide's design brief: the code is the brief. `create_artboard` ignores
      `left`/`top`: position boards with `update_styles` afterwards.
+   - **Paper quirks that leak into the export:** give every text layer an explicit colour (a text
+     with none exports no colour class, and a colour set on the frame isn't exported for its
+     texts); a text once set to `white-space: nowrap` keeps exporting `w-max` after it is reset, so
+     rewrite the layer instead; draw sample widths in off-scale px (360px, not 400px, which
+     exports as the token class `w-sm` and looks like a real class).
 3. Switch `source` to the new entry only after its round trip passes: `paper-to-code` against it
    produces no code diff.
 

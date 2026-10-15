@@ -145,7 +145,9 @@ Mapping rules:
   `Caption`, `Section/*` and `Column/*` layers. Those texts live in the stories
   (`parameters.paper`, `src/stories/paperBoard.tsx`): if the designer changed one, report it as a
   story to-do, never sync it.
-- `border-solid` is the default border style: drop it.
+- `border-solid` is the default border style: drop it, including per side
+  (`border-b border-b-solid border-b-border` → `border-b border-border`).
+- `rounded-[calc(infinity*1px)]` is Paper's `9999px` radius: → `rounded-full`.
 - **Font family is inherited:** never emit `font-sans`, `font-[system-ui,…]` or
   `[font-family:var(--font-sans)]`. The body sets `font-sans` (`styles/index.css`) and Tailwind's
   preflight makes controls inherit it. Emit a family only when it isn't `--font-sans` (e.g. a mono
