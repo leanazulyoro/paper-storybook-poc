@@ -119,8 +119,13 @@ When the target entry in `paper.config.json` has `"id": null`, the file doesn't 
      texts); a text once set to `white-space: nowrap` keeps exporting `w-max` after it is reset, so
      rewrite the layer instead; draw sample widths in off-scale px (360px, not 400px, which
      exports as the token class `w-sm` and looks like a real class).
-3. Switch `source` to the new entry only after its round trip passes: `paper-to-code` against it
-   produces no code diff.
+3. **Round trip**, without changing code: map every board's export with the `paper-to-code` rules
+   into a scratch JSON (`{ "components/Button.styles.ts": { "base": "…", "variant.primary": "…" } }`,
+   paths under `packages/ui/src`, nested keys joined with dots) and run
+   `node scripts/compare-styles.mjs <file>` (exit 0 = every key has the same class set). Tokens:
+   `write-tokens.mjs <tokens> <hash> <config key>`, `git diff`: only the header line may change;
+   then `git checkout -- packages`. Icons and typography: compare by hand with the step 3/1b rules.
+4. Switch `source` to the new entry only after the round trip passes.
 
 Focus rings are code-owned: never push focus classes; at most update `--color-focus` or the
 reference `…/Focus` frames.
