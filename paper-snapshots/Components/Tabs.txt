@@ -1,0 +1,54 @@
+    <div className="[font-synthesis:none] wrap-anywhere flex overflow-clip w-[560px] h-fit flex-col p-8 gap-4 [background-color:var(--color-background)] antialiased">
+      <div className="tracking-wide uppercase font-sans font-medium text-muted-foreground text-xs/tight">
+        Tabs
+      </div>
+      <div className="flex flex-col items-start gap-6">
+        <div className="flex flex-col items-start gap-2">
+          <div className="font-sans font-medium text-muted-foreground text-xs/tight">
+            List · Deposit selected
+          </div>
+          <div className="flex items-center p-1 rounded-md gap-1 bg-muted border border-solid border-border">
+            <div className="flex items-center justify-center h-8 px-3 rounded-sm [background-color:var(--color-background)] border border-solid border-border">
+              <div className="w-max font-sans font-medium text-foreground text-sm/tight">
+                Deposit
+              </div>
+            </div>
+            <div className="flex items-center justify-center h-8 px-3 rounded-sm border border-solid border-muted">
+              <div className="w-max font-sans font-medium text-muted-foreground text-sm/tight">
+                Withdraw
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col items-start gap-2">
+          <div className="font-sans font-medium text-muted-foreground text-xs/tight">
+            Tab · idle · hover · selected · disabled
+          </div>
+          <div className="flex items-center p-1 rounded-md gap-1 bg-muted border border-solid border-border">
+            <div className="flex items-center justify-center h-8 px-3 rounded-sm border border-solid border-muted">
+              <div className="w-max font-sans font-medium text-muted-foreground text-sm/tight">
+                Withdraw
+              </div>
+            </div>
+            <div className="flex items-center justify-center h-8 px-3 rounded-sm border border-solid border-muted">
+              <div className="w-max font-sans font-medium text-foreground text-sm/tight">
+                Withdraw
+              </div>
+            </div>
+            <div className="flex items-center justify-center h-8 px-3 rounded-sm [background-color:var(--color-background)] border border-solid border-border">
+              <div className="w-max font-sans font-medium text-foreground text-sm/tight">
+                Deposit
+              </div>
+            </div>
+            <div className="flex items-center justify-center h-8 opacity-disabled px-3 rounded-sm border border-solid border-muted">
+              <div className="w-max font-sans font-medium text-muted-foreground text-sm/tight">
+                Borrow
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="font-sans font-medium text-muted-foreground text-xs/tight">
+        Deposit / Withdraw switch on the Deposit page. Sample tab names for design review.
+      </div>
+    </div>
