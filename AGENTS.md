@@ -9,4 +9,8 @@ Procedures (plain markdown, follow them step by step):
 - Sync a Paper design change into code: [`.claude/skills/paper-to-code/SKILL.md`](.claude/skills/paper-to-code/SKILL.md)
 - Push a code-side visual change back to Paper: [`.claude/skills/code-to-paper/SKILL.md`](.claude/skills/code-to-paper/SKILL.md)
 
+Paper ↔ code goes through these procedures only. The `paper-desktop` plugin is installed for its
+MCP connection; don't use its generic `design-to-code` / `code-to-design` skills here: they generate
+code or boards without this repo's ownership split, state mapping, snapshots or sync commits.
+
 Setup and experiments: [`GUIDE.md`](GUIDE.md).
