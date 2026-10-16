@@ -108,14 +108,18 @@ keys in `<Component>.styles.ts` (the `// Frame/Name` comments say which frame fe
 Mapping rules:
 
 - Base frame = default variant. A **state frame** contributes only its difference from its base
-  frame, emitted with the variant for that state. Which variant depends on what renders it:
+  frame, emitted with the variant for that state. Which variant depends on what renders it.
+  **Base UI parts don't share state names:** before mapping a state on a Base UI part, read that
+  part's data attributes in `packages/ui/node_modules/@base-ui/react/<component>/<part>/*DataAttributes.d.ts`
+  (e.g. `tabs/tab/TabsTabDataAttributes.d.ts`) and use the attribute for that state. The Base UI
+  column below is examples, not the full list:
 
   | Paper frame        | Native element (Button) | Base UI part (DropdownMenu, Input, …)                                                                                          |
   | ------------------ | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
   | `…/Hover`          | `not-disabled:hover:`   | `not-data-disabled:hover:` (trigger); `not-data-selected:data-highlighted:` (item: hover and keyboard highlight are one state) |
   | `…/Active`         | `not-disabled:active:`  | `not-data-disabled:active:`                                                                                                    |
   | `…/Disabled`       | `disabled:`             | `data-disabled:`                                                                                                               |
-  | `…/Selected`       | n/a                     | `data-selected:`                                                                                                               |
+  | `…/Selected`       | n/a                     | `data-selected:` (Select item); `data-active:` (Tabs tab)                                                                      |
   | `…/Open` (trigger) | n/a                     | `data-popup-open:`                                                                                                             |
   | `…/Error`          | n/a                     | `data-invalid:` (every Field part: control, description, error)                                                                |
 
