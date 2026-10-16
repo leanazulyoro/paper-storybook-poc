@@ -53,6 +53,9 @@ Source boards and their snapshot files:
    `get_tree_summary` gives the layer names (`Component/Variant`, `Stat/TVL`…) the export lacks.
 4. A missing snapshot (first sync, new board): compare the whole board against its styles file
    once, then the snapshot is the baseline.
+5. **A change you don't apply keeps its old snapshot.** If you stop and report part of a board's
+   change (something in use, see the top of this skill), restore that board's snapshot
+   (`git checkout -- <file>`) and never commit the new one: the next sync must still see the diff.
 
 Caveat: a token change can change how Paper exports unrelated boards (e.g. after `--color-focus`
 aliased `--color-primary`, `bg-primary` started exporting as `[background-color:var(--color-primary)]`).
@@ -118,14 +121,14 @@ Mapping rules:
   (e.g. `tabs/tab/TabsTabDataAttributes.d.ts`) and use the attribute for that state. The Base UI
   column below is examples, not the full list:
 
-  | Paper frame        | Native element (Button) | Base UI part (DropdownMenu, Input, …)                                                                                          |
-  | ------------------ | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-  | `…/Hover`          | `not-disabled:hover:`   | `not-data-disabled:hover:` (trigger); `not-data-selected:data-highlighted:` (item: hover and keyboard highlight are one state) |
-  | `…/Active`         | `not-disabled:active:`  | `not-data-disabled:active:`                                                                                                    |
-  | `…/Disabled`       | `disabled:`             | `data-disabled:`                                                                                                               |
-  | `…/Selected`       | n/a                     | `data-selected:` (Select item); `data-active:` (Tabs tab)                                                                      |
-  | `…/Open` (trigger) | n/a                     | `data-popup-open:`                                                                                                             |
-  | `…/Error`          | n/a                     | `data-invalid:` (every Field part: control, description, error)                                                                |
+  | Paper frame        | Native element (Button) | Base UI part (DropdownMenu, Input, …)                                                                                                                              |
+  | ------------------ | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+  | `…/Hover`          | `not-disabled:hover:`   | `not-data-disabled:hover:` (trigger, tab: parts with no highlight state); `not-data-selected:data-highlighted:` (item: hover and keyboard highlight are one state) |
+  | `…/Active`         | `not-disabled:active:`  | `not-data-disabled:active:`                                                                                                                                        |
+  | `…/Disabled`       | `disabled:`             | `data-disabled:`                                                                                                                                                   |
+  | `…/Selected`       | n/a                     | `data-selected:` (Select item); `data-active:` (Tabs tab)                                                                                                          |
+  | `…/Open` (trigger) | n/a                     | `data-popup-open:`                                                                                                                                                 |
+  | `…/Error`          | n/a                     | `data-invalid:` (every Field part: control, description, error)                                                                                                    |
 
   A disabled control never reacts (hence the `not-…disabled` guards). Never emit conditional
   classes for states: the `.tsx` doesn't pick classes by state, Base UI's attributes do.
@@ -157,10 +160,11 @@ Mapping rules:
 - `border-solid` is the default border style: drop it, including per side
   (`border-b border-b-solid border-b-border` → `border-b border-border`).
 - `rounded-[calc(infinity*1px)]` is Paper's `9999px` radius: → `rounded-full`.
-- **Font family is inherited:** never emit `font-sans`, `font-[system-ui,…]` or
+- **Font family is inherited:** never emit `font-sans`, `font-[system-ui,…]`,
+  `font-['Inter',…]` (a literal name of the `--font-sans` family) or
   `[font-family:var(--font-sans)]`. The body sets `font-sans` (`styles/index.css`) and Tailwind's
   preflight makes controls inherit it. Emit a family only when it isn't `--font-sans` (e.g. a mono
-  token).
+  token); if that family isn't a token either, report it like a raw colour (step 0b).
 - **Equivalent is not different.** Paper can't express some CSS, so a few exports differ from code
   without differing in look. Keep the code's form:
   - `flex` stays `inline-flex` on any key where the code has it (Button, Badge, CopyButton,
@@ -215,10 +219,14 @@ uses it yet, so creating it can't break anything; the rules below keep it that w
   part's data attributes (step 2's state table), never picked in the `.tsx`. A header comment names
   the part and the behaviour it brings.
 - `<Name>.styles.ts`: the keys, named from the frames (`// Frame/Name` comments), with empty strings:
-  the sync fills them.
+  the sync fills them. When it does, a root that hugs its content in Paper (sized to fit inside a
+  row) is `inline-flex`, not `flex`: Paper has no inline layout, and `flex` would stretch it.
+- Only what Paper draws: a tab list without panels stays a list. Report what the design leaves open
+  (e.g. tab panels and `aria-controls`) for engineering instead of inventing it.
 - `<Name>.stories.tsx`: `meta` with `paperBoard({ board: 'Components › <Name>', … })` from the board's
   title, note and width; one `paper`-tagged story per sample on the board (states via `pseudo`); one
-  untagged behaviour test with a play function (keyboard, disabled).
+  untagged behaviour test with a play function (keyboard, disabled). A controlled component needs
+  state in its stories: keep that wrapper inline in the stories file (`render: function Render…`).
 - Commit it alone as `feat(ui): scaffold <Name> from Paper` (never `sync(paper):`), with lint,
   typecheck and tests passing. Then step 2 fills its styles in the `sync(paper):` commit.
 - In the report, list the props you chose: the API is a proposal for engineering to review in the PR.
