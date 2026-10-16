@@ -18,6 +18,12 @@ const config: StorybookConfig = {
   typescript: { reactDocgen: 'react-docgen-typescript' },
   viteFinal: (config) => {
     config.plugins = [...(config.plugins ?? []), tailwindcss()]
+    // Pre-bundle every Base UI part up front. Otherwise the first story run after a component
+    // starts using a new part (e.g. tabs) re-optimizes mid-run and fails its stories once.
+    config.optimizeDeps = {
+      ...config.optimizeDeps,
+      include: [...(config.optimizeDeps?.include ?? []), '@base-ui/react/*'],
+    }
     return config
   },
 }
