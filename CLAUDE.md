@@ -19,6 +19,8 @@ See `README.md` (phases, success bar) and `FINDINGS.md` (every decision and why)
   (`/paper-to-code`), in `sync(paper):` commits that touch nothing else (CI enforces).
 - **Code owns behaviour**: `.tsx` files (markup, hooks, a11y, states), the focus ring
   (`focusRing.ts`; Paper owns only `--color-focus`).
+- **New components drawn in Paper** are scaffolded by the sync agent on a Base UI part, in their
+  own `feat(ui):` commit (paper-to-code step 2c); changes to anything already in use stay a human's.
 - A visual fix made in code must be pushed to Paper (`/code-to-paper`) or the next sync reverts it.
 - New visual designs created through MCP require the user's review of the completed appearance
   before local implementation, sync, or design-export snapshots. Follow

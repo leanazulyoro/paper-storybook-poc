@@ -13,8 +13,12 @@ Paper owns how things look; code owns how they behave. A sync may write only:
 - `paper-snapshots/**/*.txt` (raw Paper exports, for change detection)
 
 CI fails any `sync(paper):` commit that touches anything else (`scripts/check-sync-commits.mjs`).
-If the design needs something outside these files (a new prop, a new element, behaviour), stop
-and report it: that's a code change for a human-reviewed commit, not a sync.
+If the design needs something outside these files, what you do depends on what it touches:
+
+- **A new component** (a Components board with no code counterpart, nothing using it yet): scaffold
+  it yourself in a separate code commit (step 2c), then sync its styles as usual.
+- **Anything already in use** (an existing component's or block's props, markup or behaviour, a
+  page, the app): stop and report it. That's a human-reviewed code change, never part of a sync.
 
 ## Before starting
 
@@ -193,6 +197,32 @@ shipped) or removal with the designer's OK.
 any that still show the old look (find them with `find_nodes` on the old style signature): the
 designer fixes them, or `/code-to-paper` does.
 
+## 2c. New component (scaffold)
+
+A Components board with no matching file in `packages/ui/src/components/` is a new component. Nothing
+uses it yet, so creating it can't break anything; the rules below keep it that way.
+
+- **Only when it has a safe source of behaviour:** a Base UI part whose role fits (tabs → `Tabs`,
+  on/off → `Switch`, a menu → `Menu`…; the parts are folders in
+  `packages/ui/node_modules/@base-ui/react/`), or no interaction at all (purely visual). Interaction
+  with no Base UI part (a carousel, a drag handle): stop and report; hand-written behaviour is a
+  human's job.
+- **Add files only:** `<Name>.tsx`, `<Name>.styles.ts`, `<Name>.stories.tsx`, and its export in
+  `src/index.ts`. Never edit an existing component, block, page or the app; using the new component
+  anywhere is a change to something in use (report it).
+- `<Name>.tsx`: the Base UI part; every text from props (i18n); a selection is controlled
+  (`value` + `onValueChange`); `focusRing`; code-owned cursor classes; states styled through the
+  part's data attributes (step 2's state table), never picked in the `.tsx`. A header comment names
+  the part and the behaviour it brings.
+- `<Name>.styles.ts`: the keys, named from the frames (`// Frame/Name` comments), with empty strings:
+  the sync fills them.
+- `<Name>.stories.tsx`: `meta` with `paperBoard({ board: 'Components › <Name>', … })` from the board's
+  title, note and width; one `paper`-tagged story per sample on the board (states via `pseudo`); one
+  untagged behaviour test with a play function (keyboard, disabled).
+- Commit it alone as `feat(ui): scaffold <Name> from Paper` (never `sync(paper):`), with lint,
+  typecheck and tests passing. Then step 2 fills its styles in the `sync(paper):` commit.
+- In the report, list the props you chose: the API is a proposal for engineering to review in the PR.
+
 ## 3. Icons
 
 **Icons** page, boards `Mono` and `Color`; each SVG layer is named by its registry key
@@ -220,9 +250,9 @@ with the Paper frames named in their `parameters.paper` (screenshots), and only 
 stories are code-only (behaviour tests, stress cases) and have no Paper counterpart. In Storybook,
 the sidebar's tag filter → `paper` shows just these.
 
-- A new or renamed source frame needs a `paper`-tagged story (`tags: ['paper']`,
-  `parameters: { paper: 'Page › Board › Frame' }`): a story change is code, so report it for a
-  separate non-sync commit.
+- A new or renamed source frame needs a `paper`-tagged story (`tags: ['paper']`, its board in
+  `parameters.paper`): a story change is code. For a new component the scaffold adds it (step 2c);
+  otherwise report it for a separate non-sync commit.
 
 - Storybook from a worktree: port 6006 belongs to the main checkout, so run
   `pnpm --filter @poc/ui exec storybook dev -p 6011 --no-open` and stop it when done.
@@ -236,6 +266,8 @@ the sidebar's tag filter → `paper` shows just these.
 `node scripts/check-sync-commits.mjs HEAD~1 HEAD`. Docs/findings go in a separate commit.
 Report anything you skipped (hardcoded values from step 0b first, structural changes, drift, out-of-date copies)
 to the user.
+
+**New component:** the scaffold commit first (step 2c), then the sync that fills its styles.
 
 **Commit order when code depends on what the sync removes or renames.** A sync can't touch `.tsx`,
 so if it removes or renames something code still uses (an icon key, a style key), the sync commit
