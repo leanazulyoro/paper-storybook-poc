@@ -36,14 +36,14 @@ If the design needs something outside these files, what you do depends on what i
 Paper has no change feed and its export has no layer names, so changes are found by diffing.
 Source boards and their snapshot files:
 
-| Page › board                                                      | Snapshot                                   |
-| ----------------------------------------------------------------- | ------------------------------------------ |
-| Tokens › Colors & Type                                            | `paper-snapshots/Tokens/ColorsAndType.txt` |
-| Tokens › Typography                                               | `paper-snapshots/Tokens/Typography.txt`    |
-| Components › Button, Input, Badge, Card, CopyButton, DropdownMenu | `paper-snapshots/Components/<Board>.txt`   |
-| Blocks › DepositForm, VaultSummary, PageHeader                    | `paper-snapshots/Blocks/<Board>.txt`       |
-| Icons › Mono, Color                                               | `paper-snapshots/Icons/<Board>.txt`        |
-| Pages › Deposit (artboard → `Page.styles.ts`)                     | `paper-snapshots/Pages/Deposit.txt`        |
+| Page › board                                                            | Snapshot                                   |
+| ----------------------------------------------------------------------- | ------------------------------------------ |
+| Tokens › Colors & Type                                                  | `paper-snapshots/Tokens/ColorsAndType.txt` |
+| Tokens › Typography                                                     | `paper-snapshots/Tokens/Typography.txt`    |
+| Components › Button, Input, Badge, Card, CopyButton, DropdownMenu, Tabs | `paper-snapshots/Components/<Board>.txt`   |
+| Blocks › DepositForm, VaultSummary, PageHeader                          | `paper-snapshots/Blocks/<Board>.txt`       |
+| Icons › Mono, Color                                                     | `paper-snapshots/Icons/<Board>.txt`        |
+| Pages › Deposit (artboard → `Page.styles.ts`)                           | `paper-snapshots/Pages/Deposit.txt`        |
 
 1. `get_basic_info` per page for board ids (pages can gain boards: add them to the table).
 2. `get_jsx` every source board and overwrite its snapshot with the output **verbatim** (the JSX
