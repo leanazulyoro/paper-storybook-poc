@@ -13,8 +13,12 @@ Paper owns how things look; code owns how they behave. A sync may write only:
 - `paper-snapshots/**/*.txt` (raw Paper exports, for change detection)
 
 CI fails any `sync(paper):` commit that touches anything else (`scripts/check-sync-commits.mjs`).
-If the design needs something outside these files (a new prop, a new element, behaviour), stop
-and report it: that's a code change for a human-reviewed commit, not a sync.
+If the design needs something outside these files, what you do depends on what it touches:
+
+- **A new component** (a Components board with no code counterpart, nothing using it yet): scaffold
+  it yourself in a separate code commit (step 2c), then sync its styles as usual.
+- **Anything already in use** (an existing component's or block's props, markup or behaviour, a
+  page, the app): stop and report it. That's a human-reviewed code change, never part of a sync.
 
 ## Before starting
 
@@ -49,6 +53,9 @@ Source boards and their snapshot files:
    `get_tree_summary` gives the layer names (`Component/Variant`, `Stat/TVL`…) the export lacks.
 4. A missing snapshot (first sync, new board): compare the whole board against its styles file
    once, then the snapshot is the baseline.
+5. **A change you don't apply keeps its old snapshot.** If you stop and report part of a board's
+   change (something in use, see the top of this skill), restore that board's snapshot
+   (`git checkout -- <file>`) and never commit the new one: the next sync must still see the diff.
 
 Caveat: a token change can change how Paper exports unrelated boards (e.g. after `--color-focus`
 aliased `--color-primary`, `bg-primary` started exporting as `[background-color:var(--color-primary)]`).
@@ -114,14 +121,14 @@ Mapping rules:
   (e.g. `tabs/tab/TabsTabDataAttributes.d.ts`) and use the attribute for that state. The Base UI
   column below is examples, not the full list:
 
-  | Paper frame        | Native element (Button) | Base UI part (DropdownMenu, Input, …)                                                                                          |
-  | ------------------ | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-  | `…/Hover`          | `not-disabled:hover:`   | `not-data-disabled:hover:` (trigger); `not-data-selected:data-highlighted:` (item: hover and keyboard highlight are one state) |
-  | `…/Active`         | `not-disabled:active:`  | `not-data-disabled:active:`                                                                                                    |
-  | `…/Disabled`       | `disabled:`             | `data-disabled:`                                                                                                               |
-  | `…/Selected`       | n/a                     | `data-selected:` (Select item); `data-active:` (Tabs tab)                                                                      |
-  | `…/Open` (trigger) | n/a                     | `data-popup-open:`                                                                                                             |
-  | `…/Error`          | n/a                     | `data-invalid:` (every Field part: control, description, error)                                                                |
+  | Paper frame        | Native element (Button) | Base UI part (DropdownMenu, Input, …)                                                                                                                              |
+  | ------------------ | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+  | `…/Hover`          | `not-disabled:hover:`   | `not-data-disabled:hover:` (trigger, tab: parts with no highlight state); `not-data-selected:data-highlighted:` (item: hover and keyboard highlight are one state) |
+  | `…/Active`         | `not-disabled:active:`  | `not-data-disabled:active:`                                                                                                                                        |
+  | `…/Disabled`       | `disabled:`             | `data-disabled:`                                                                                                                                                   |
+  | `…/Selected`       | n/a                     | `data-selected:` (Select item); `data-active:` (Tabs tab)                                                                                                          |
+  | `…/Open` (trigger) | n/a                     | `data-popup-open:`                                                                                                                                                 |
+  | `…/Error`          | n/a                     | `data-invalid:` (every Field part: control, description, error)                                                                                                    |
 
   A disabled control never reacts (hence the `not-…disabled` guards). Never emit conditional
   classes for states: the `.tsx` doesn't pick classes by state, Base UI's attributes do.
@@ -153,10 +160,11 @@ Mapping rules:
 - `border-solid` is the default border style: drop it, including per side
   (`border-b border-b-solid border-b-border` → `border-b border-border`).
 - `rounded-[calc(infinity*1px)]` is Paper's `9999px` radius: → `rounded-full`.
-- **Font family is inherited:** never emit `font-sans`, `font-[system-ui,…]` or
+- **Font family is inherited:** never emit `font-sans`, `font-[system-ui,…]`,
+  `font-['Inter',…]` (a literal name of the `--font-sans` family) or
   `[font-family:var(--font-sans)]`. The body sets `font-sans` (`styles/index.css`) and Tailwind's
   preflight makes controls inherit it. Emit a family only when it isn't `--font-sans` (e.g. a mono
-  token).
+  token); if that family isn't a token either, report it like a raw colour (step 0b).
 - **Equivalent is not different.** Paper can't express some CSS, so a few exports differ from code
   without differing in look. Keep the code's form:
   - `flex` stays `inline-flex` on any key where the code has it (Button, Badge, CopyButton,
@@ -193,6 +201,36 @@ shipped) or removal with the designer's OK.
 any that still show the old look (find them with `find_nodes` on the old style signature): the
 designer fixes them, or `/code-to-paper` does.
 
+## 2c. New component (scaffold)
+
+A Components board with no matching file in `packages/ui/src/components/` is a new component. Nothing
+uses it yet, so creating it can't break anything; the rules below keep it that way.
+
+- **Only when it has a safe source of behaviour:** a Base UI part whose role fits (tabs → `Tabs`,
+  on/off → `Switch`, a menu → `Menu`…; the parts are folders in
+  `packages/ui/node_modules/@base-ui/react/`), or no interaction at all (purely visual). Interaction
+  with no Base UI part (a carousel, a drag handle): stop and report; hand-written behaviour is a
+  human's job.
+- **Add files only:** `<Name>.tsx`, `<Name>.styles.ts`, `<Name>.stories.tsx`, and its export in
+  `src/index.ts`. Never edit an existing component, block, page or the app; using the new component
+  anywhere is a change to something in use (report it).
+- `<Name>.tsx`: the Base UI part; every text from props (i18n); a selection is controlled
+  (`value` + `onValueChange`); `focusRing`; code-owned cursor classes; states styled through the
+  part's data attributes (step 2's state table), never picked in the `.tsx`. A header comment names
+  the part and the behaviour it brings.
+- `<Name>.styles.ts`: the keys, named from the frames (`// Frame/Name` comments), with empty strings:
+  the sync fills them. When it does, a root that hugs its content in Paper (sized to fit inside a
+  row) is `inline-flex`, not `flex`: Paper has no inline layout, and `flex` would stretch it.
+- Only what Paper draws: a tab list without panels stays a list. Report what the design leaves open
+  (e.g. tab panels and `aria-controls`) for engineering instead of inventing it.
+- `<Name>.stories.tsx`: `meta` with `paperBoard({ board: 'Components › <Name>', … })` from the board's
+  title, note and width; one `paper`-tagged story per sample on the board (states via `pseudo`); one
+  untagged behaviour test with a play function (keyboard, disabled). A controlled component needs
+  state in its stories: keep that wrapper inline in the stories file (`render: function Render…`).
+- Commit it alone as `feat(ui): scaffold <Name> from Paper` (never `sync(paper):`), with lint,
+  typecheck and tests passing. Then step 2 fills its styles in the `sync(paper):` commit.
+- In the report, list the props you chose: the API is a proposal for engineering to review in the PR.
+
 ## 3. Icons
 
 **Icons** page, boards `Mono` and `Color`; each SVG layer is named by its registry key
@@ -220,9 +258,9 @@ with the Paper frames named in their `parameters.paper` (screenshots), and only 
 stories are code-only (behaviour tests, stress cases) and have no Paper counterpart. In Storybook,
 the sidebar's tag filter → `paper` shows just these.
 
-- A new or renamed source frame needs a `paper`-tagged story (`tags: ['paper']`,
-  `parameters: { paper: 'Page › Board › Frame' }`): a story change is code, so report it for a
-  separate non-sync commit.
+- A new or renamed source frame needs a `paper`-tagged story (`tags: ['paper']`, its board in
+  `parameters.paper`): a story change is code. For a new component the scaffold adds it (step 2c);
+  otherwise report it for a separate non-sync commit.
 
 - Storybook from a worktree: port 6006 belongs to the main checkout, so run
   `pnpm --filter @poc/ui exec storybook dev -p 6011 --no-open` and stop it when done.
@@ -236,6 +274,8 @@ the sidebar's tag filter → `paper` shows just these.
 `node scripts/check-sync-commits.mjs HEAD~1 HEAD`. Docs/findings go in a separate commit.
 Report anything you skipped (hardcoded values from step 0b first, structural changes, drift, out-of-date copies)
 to the user.
+
+**New component:** the scaffold commit first (step 2c), then the sync that fills its styles.
 
 **Commit order when code depends on what the sync removes or renames.** A sync can't touch `.tsx`,
 so if it removes or renames something code still uses (an icon key, a style key), the sync commit
