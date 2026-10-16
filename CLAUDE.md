@@ -22,6 +22,9 @@ See `README.md` (phases, success bar) and `FINDINGS.md` (every decision and why)
 - **New components drawn in Paper** are scaffolded by the sync agent on a Base UI part, in their
   own `feat(ui):` commit (paper-to-code step 2c); changes to anything already in use stay a human's.
 - A visual fix made in code must be pushed to Paper (`/code-to-paper`) or the next sync reverts it.
+- Paper ↔ code goes through `/paper-to-code` and `/code-to-paper` only. The `paper-desktop` plugin
+  is here for its MCP connection; don't use its generic `design-to-code` / `code-to-design` skills
+  (no ownership split, state mapping, snapshots or sync commits).
 - New visual designs created through MCP require the user's review of the completed appearance
   before local implementation, sync, or design-export snapshots. Follow
   [paper-design-review](.claude/skills/paper-design-review/SKILL.md); agent screenshot checks
